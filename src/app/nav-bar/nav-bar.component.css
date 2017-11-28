@@ -1,5 +1,34 @@
 .nav-bar {
   width: 100%;
   height: 30px;
-  background-color: midnightblue;
+  margin: 0;
+  padding: 0;
 }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #354141;;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+li a:hover {
+  background-color: #74afad;;
+}
+
+/*#d98733*/
+/*#e7e7e5*/
