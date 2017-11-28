@@ -9,13 +9,15 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SpeakerComponent } from './speaker/speaker.component';
 import { AdminComponent } from './admin/admin.component';
 import {appRoutes} from "./app.routing";
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     SpeakerComponent,
-    AdminComponent
+    AdminComponent,
+    HomeComponent
   ],
   imports: [
     RouterModule,
