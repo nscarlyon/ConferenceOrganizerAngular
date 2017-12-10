@@ -7,6 +7,7 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
   templateUrl: './speaker.component.html',
   styleUrls: ['./speaker.component.css']
 })
+
 export class SpeakerComponent implements OnInit {
   proposalForm: FormGroup;
   message: string = "";

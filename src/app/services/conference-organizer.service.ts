@@ -1,10 +1,6 @@
 import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {HttpEvent} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {HttpHandler} from "@angular/common/http";
-import {HttpRequest} from "@angular/common/http";
-import {HttpInterceptor} from "@angular/common/http";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable()
