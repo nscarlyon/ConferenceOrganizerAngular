@@ -18,15 +18,14 @@ export class ConferenceOrganizerService implements OnInit {
   }
 
   ngOnInit() {
-    this.GetCfpStatus();
+    this.getCfpStatus();
   }
 
-  GetCfpStatus(): any {
+  getCfpStatus(): any {
     this._http
       .get(`${this._url}cfp`, this._options)
       .subscribe(
         data => {
-          console.log(data["status"] + "Test");
           return data["status"];
         },
         (err: HttpErrorResponse) => {

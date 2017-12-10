@@ -16,7 +16,7 @@ export class HomeComponent implements OnInit {
   }
 
   GetCfpStatus() {
-    this.cfpStatus = this.conferenceOrganizerService.GetCfpStatus();
+    this.cfpStatus = this.conferenceOrganizerService.getCfpStatus();
     console.log("hello?" + this.cfpStatus);
   }
 
