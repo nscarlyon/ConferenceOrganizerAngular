@@ -37,4 +37,9 @@ export class ConferenceOrganizerService implements OnInit {
         }
       );
   }
+
+  postProposal(proposal: any): Observable<any> {
+     return this._http
+                .post(`${this._url}proposals`, proposal, this._options);
+    }
 }

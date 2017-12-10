@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {ConferenceOrganizerService} from "../services/conference-organizer.service";
 
 @Component({
   selector: 'app-speaker',
@@ -8,8 +9,9 @@ import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 })
 export class SpeakerComponent implements OnInit {
   proposalForm: FormGroup;
+  message: string = "";
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private conferenceOrganizerService: ConferenceOrganizerService) {
     this.createForm();
   }
 
@@ -32,6 +34,8 @@ export class SpeakerComponent implements OnInit {
   }
 
    onSubmit(): void {
-    console.log(this.proposalForm.value);
+    this.conferenceOrganizerService.postProposal(this.proposalForm.value).subscribe((response) => {
+      this.message = response["message"];
+    });
   }
 }
