@@ -19,7 +19,7 @@ export class SpeakerComponent implements OnInit {
 
   private createForm() {
     this.proposalForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      speakerName: ['', Validators.required],
       email: ['', Validators.email],
       bio: ['', Validators.required],
       title: ['', Validators.required],
