@@ -1,3 +1,32 @@
-<p>
-  speaker works!
-</p>
+<h2>Submit a Proposal</h2>
+
+<form [formGroup]="proposalForm" (ngSubmit)="onSubmit()">
+  <div class="form-control">
+    <label class="">Name:
+      <input formControlName="name">
+    </label>
+  </div>
+  <div class="form-control">
+    <label class="">Email:
+      <input formControlName="email">
+    </label>
+  </div>
+  <div class="form-control">
+    <label class="">Bio:
+      <textarea formControlName="bio"></textarea>
+    </label>
+  </div>
+  <div class="form-control">
+    <label class="">Title:
+      <input formControlName="title">
+    </label>
+  </div>
+  <div class="form-control">
+    <label class="">Description:
+      <textarea formControlName="description"></textarea>
+    </label>
+  </div>
+  <button type="submit" [disabled]="proposalForm.pristine || proposalForm.invalid">Save</button>
+  <button (click)="reset()">Clear Form</button>
+</form>
+
