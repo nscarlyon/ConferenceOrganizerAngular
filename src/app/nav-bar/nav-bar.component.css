@@ -1,28 +1,10 @@
-.nav-bar {
-  width: 100%;
-  height: 30px;
-  margin: 0;
-  padding: 0;
-}
-
 ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
   overflow: hidden;
-  background-color: #354141;;
-}
-
-li {
-  float: left;
+  background-color: #354141;
 }
 
 li a {
-  display: block;
   color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
   cursor: pointer;
 }
 
@@ -30,5 +12,13 @@ li a:hover {
   background-color: #74afad;;
 }
 
-/*#d98733*/
+.navbar-brand {
+  background-color: #d98733;
+  color: white;
+}
+
+.nav-background {
+  background-color: #354141;
+}
+
 /*#e7e7e5*/
