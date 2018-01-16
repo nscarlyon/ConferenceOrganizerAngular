@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormBuilder, Validators} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
 import {ConferenceOrganizerService} from "../services/conference-organizer.service";
 
 @Component({
@@ -23,11 +23,15 @@ export class SpeakerComponent implements OnInit {
   private createForm() {
     this.proposalForm = this.formBuilder.group({
       speakerName: ['', Validators.required],
-      email: ['', Validators.email],
+      email: ['', [Validators.email, Validators.required]],
       bio: ['', Validators.required],
       title: ['', Validators.required],
       description: ['', Validators.required]
     })
+  }
+
+  get email() {
+    return this.proposalForm.get('email');
   }
 
   reset(): void {

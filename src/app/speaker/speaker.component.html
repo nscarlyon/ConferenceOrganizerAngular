@@ -1,32 +1,60 @@
 <h2>Submit a Proposal</h2>
 
 <form [formGroup]="proposalForm" (ngSubmit)="onSubmit()">
-  <div class="form-control">
+  <div class="form-group">
     <label class="">Name:
-      <input formControlName="speakerName">
+      <input class="form-control" formControlName="speakerName">
     </label>
+    <div *ngIf="proposalForm.get('speakerName').invalid && (proposalForm.get('speakerName').dirty || proposalForm.get('speakerName').touched)" class="alert alert-danger">
+      <div *ngIf="proposalForm.get('speakerName').errors.required">
+        Name is required.
+      </div>
+    </div>
   </div>
-  <div class="form-control">
+  <div class="form-group">
     <label class="">Email:
-      <input formControlName="email">
+      <input id="email" type="email" class="form-control" formControlName="email">
     </label>
+    <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+      <div *ngIf="email.errors.required">
+        E-mail required.
+      </div>
+      <div *ngIf="email.errors.email">
+        Must be valid e-mail.
+      </div>
+    </div>
   </div>
-  <div class="form-control">
+  <div class="form-group">
     <label class="">Bio:
-      <textarea formControlName="bio"></textarea>
+      <textarea class="form-control"  formControlName="bio"></textarea>
     </label>
+    <div *ngIf="proposalForm.get('bio').invalid && (proposalForm.get('bio').dirty || proposalForm.get('bio').touched)" class="alert alert-danger">
+      <div *ngIf="proposalForm.get('bio').errors.required">
+        Bio is required.
+      </div>
+    </div>
   </div>
-  <div class="form-control">
+  <div class="form-group">
     <label class="">Title:
-      <input formControlName="title">
+      <input class="form-control"  formControlName="title">
     </label>
+    <div *ngIf="proposalForm.get('title').invalid && (proposalForm.get('title').dirty || proposalForm.get('title').touched)" class="alert alert-danger">
+      <div *ngIf="proposalForm.get('title').errors.required">
+        Title is required.
+      </div>
+    </div>
   </div>
-  <div class="form-control">
+  <div class="form-group">
     <label class="">Description:
-      <textarea formControlName="description"></textarea>
+      <textarea class="form-control" formControlName="description"></textarea>
     </label>
+    <div *ngIf="proposalForm.get('description').invalid && (proposalForm.get('description').dirty || proposalForm.get('description').touched)" class="alert alert-danger">
+      <div *ngIf="proposalForm.get('description').errors.required">
+        Description is required.
+      </div>
+    </div>
   </div>
-  <button type="submit" [disabled]="proposalForm.pristine || proposalForm.invalid">Submit</button>
+  <button class="" type="submit" [disabled]="proposalForm.pristine || proposalForm.invalid">Submit</button>
   <button (click)="reset()">Clear</button>
 </form>
 
