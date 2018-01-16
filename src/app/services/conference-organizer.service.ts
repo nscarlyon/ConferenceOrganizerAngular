@@ -2,6 +2,9 @@ import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {HttpErrorResponse} from "@angular/common/http";
+import 'rxjs/add/operator/map';
+import {catchError} from "rxjs/operators";
+import {map} from "rxjs/operator/map";
 
 @Injectable()
 export class ConferenceOrganizerService implements OnInit {
@@ -18,20 +21,11 @@ export class ConferenceOrganizerService implements OnInit {
   }
 
   getCfpStatus(): any {
-    this._http
-      .get(`${this._url}cfp`, this._options)
-      .subscribe(
-        data => {
-          return data["status"];
-        },
-        (err: HttpErrorResponse) => {
-          if (err.error instanceof Error) {
-            console.log('An error occurred:', err.error.message);
-          } else {
-            console.log(`Backend returned code ${err.status}, body was: ${err.error[0]}`);
-          }
-        }
-      );
+    return this._http.get(`${this._url}cfp`, this._options).pipe(catchError((error) => {
+      return "error";
+    })).map((response) => {
+      return response["status"];
+    });
   }
 
   postProposal(proposal: any): Observable<any> {

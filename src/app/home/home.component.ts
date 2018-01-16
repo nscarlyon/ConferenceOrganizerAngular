@@ -12,12 +12,13 @@ export class HomeComponent implements OnInit {
   constructor(private conferenceOrganizerService: ConferenceOrganizerService) { }
 
   ngOnInit() {
-    this.GetCfpStatus();
+    this.SetCfpStatus();
   }
 
-  GetCfpStatus() {
-    this.cfpStatus = this.conferenceOrganizerService.getCfpStatus();
-    console.log("hello?" + this.cfpStatus);
+  SetCfpStatus() {
+    this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
+      this.cfpStatus = response;
+    });
   }
 
 }

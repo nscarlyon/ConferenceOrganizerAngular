@@ -1,3 +1,12 @@
-<p>
+
   home works!
-</p>
+  <div *ngIf="cfpStatus == 'open'">
+    Call For Proposals is open!
+  </div>
+  <div *ngIf="cfpStatus == 'close'">
+    Call For Proposals is closed!
+  </div>
+  <div *ngIf="cfpStatus == undefined">
+    Server is down.
+  </div>
+
