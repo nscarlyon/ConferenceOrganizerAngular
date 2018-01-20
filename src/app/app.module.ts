@@ -10,8 +10,6 @@ import { AdminComponent } from './admin/admin.component';
 import {appRoutes} from "./app.routing";
 import { HomeComponent } from './home/home.component';
 import {HttpClientModule} from "@angular/common/http";
-import {NoopInterceptor} from "@angular/common/http/src/interceptor";
-import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {ConferenceOrganizerService} from "./services/conference-organizer.service";
 
 @NgModule({
