@@ -12,7 +12,20 @@ li a:hover {
   background-color: #74afad;;
 }
 
+.navbar-nav li a:active {
+  color: white;
+}
+
+.navbar-nav li a:visited {
+  color: white;
+}
+
 .navbar-brand {
+  background-color: #d98733;
+  color: white;
+}
+
+.navbar-header a:hover {
   background-color: #d98733;
   color: white;
 }
