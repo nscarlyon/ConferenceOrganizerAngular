@@ -6,19 +6,23 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SpeakerComponent } from './speaker/speaker.component';
-import { AdminComponent } from './admin/admin.component';
+import { AdminProposalsComponent } from './admin/admin-proposals/admin-proposals.component';
 import {appRoutes} from "./app.routing";
 import { HomeComponent } from './home/home.component';
 import {HttpClientModule} from "@angular/common/http";
 import {ConferenceOrganizerService} from "./services/conference-organizer.service";
+import { AdminScheduleComponent } from './admin/admin-schedule/admin-schedule.component';
+import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     SpeakerComponent,
-    AdminComponent,
-    HomeComponent
+    AdminProposalsComponent,
+    HomeComponent,
+    AdminScheduleComponent,
+    AdminHomeComponent
   ],
   imports: [
     RouterModule,
