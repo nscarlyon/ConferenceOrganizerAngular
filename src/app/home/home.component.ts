@@ -7,7 +7,8 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private cfpStatus: string;
+  public cfpStatus: string;
+  public cfpMessage: string;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService) { }
 
@@ -18,6 +19,9 @@ export class HomeComponent implements OnInit {
   SetCfpStatus() {
     this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
       this.cfpStatus = response;
+      if(response == "open") this.cfpMessage = "Call for proposals is open!";
+      else if(response == "closed") this.cfpMessage = "Call for proposals is closed!";
+      else this.cfpMessage = "Server is down!";
     });
   }
 
