@@ -1,37 +1,3 @@
-ul {
-  overflow: hidden;
-  background-color: #354141;
-}
-
-li a {
-  color: white;
-  cursor: pointer;
-}
-
-li a:hover {
-  background-color: #74afad;;
-}
-
-.navbar-nav li a:active {
+* {
   color: white;
 }
-
-.navbar-nav li a:visited {
-  color: white;
-}
-
-.navbar-brand {
-  background-color: #d98733;
-  color: white;
-}
-
-.navbar-header a:hover {
-  background-color: #d98733;
-  color: white;
-}
-
-.nav-background {
-  background-color: #354141;
-}
-
-/*#e7e7e5*/
