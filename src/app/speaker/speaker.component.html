@@ -54,10 +54,9 @@
       </div>
     </div>
   </div>
-  <button class="" type="submit" [disabled]="proposalForm.pristine || proposalForm.invalid">Submit</button>
-  <button (click)="reset()">Clear</button>
+  <button class="btn btn-success" type="submit" [disabled]="proposalForm.pristine || proposalForm.invalid">Submit</button>
+  <button type="button" class="btn btn-danger" (click)="reset()">Clear</button>
 </form>
-
 <div>
   {{message}}
 </div>

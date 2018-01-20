@@ -1,10 +1,8 @@
 import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {HttpErrorResponse} from "@angular/common/http";
 import 'rxjs/add/operator/map';
 import {catchError} from "rxjs/operators";
-import {map} from "rxjs/operator/map";
 
 @Injectable()
 export class ConferenceOrganizerService implements OnInit {
@@ -30,6 +28,6 @@ export class ConferenceOrganizerService implements OnInit {
 
   postProposal(proposal: any): Observable<any> {
      return this._http
-                .post(`${this._url}proposals`, proposal, this._options);
+                .post(`${this._url}speakers/proposals`, proposal, this._options);
     }
 }
