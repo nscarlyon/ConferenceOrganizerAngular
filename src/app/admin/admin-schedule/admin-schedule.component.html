@@ -8,36 +8,17 @@
   <button class="btn admin-btn">Publish Schedule</button>
 </div>
 
-  <table class="table table-striped table-dark">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Room A</th>
-      <th scope="col">Room B</th>
-      <th scope="col">Room C</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <th scope="row">8:00 A.M.</th>
-      <td>Presentation Tile - Speaker Name</td>
-      <td>Presentation Tile - Speaker Name</td>
-      <td>Presentation Tile - Speaker Name</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row">9:00 A.M.</th>
-      <td>Presentation Tile - Speaker Name</td>
-      <td>Presentation Tile - Speaker Name</td>
-      <td>Presentation Tile - Speaker Name</td>
-      <td>Presentation Tile - Speaker Name</td>
-    </tr>
-    <tr>
-      <th scope="row">9:30 A.M.</th>
-      <td>Presentation Tile - Speaker Name</td>
-      <td></td>
-      <td>Presentation Tile - Speaker Name</td>
-      <td></td>
-    </tr>
-    </tbody>
-  </table>
+<table class="table table-striped table-dark">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th *ngFor="let room of schedule.rooms"scope="col">{{room}}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let time of schedule.timeSlots">
+    <th scope="row">{{time.timeSlot}}</th>
+    <td *ngFor="let session of time.sessions">{{session.title}}-{{session.speakerName}}</td>
+  </tr>
+  </tbody>
+</table>
