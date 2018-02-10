@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-admin-proposals',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminProposalsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+  }
+
+  goToSessionPage(id: number): void {
+    this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
   }
 
 }
