@@ -4,6 +4,7 @@ import {RouterModule} from "@angular/router";
 import {HomeComponent} from "./home/home.component";
 import {AdminScheduleComponent} from "./admin/admin-schedule/admin-schedule.component";
 import {AdminHomeComponent} from "./admin/admin-home/admin-home.component";
+import {AdminSessionComponent} from "./admin/admin-session/admin-session.component";
 
 export const appRoutes = RouterModule.forRoot([
     {
@@ -21,6 +22,14 @@ export const appRoutes = RouterModule.forRoot([
         {
           path: 'proposals',
           component: AdminProposalsComponent
+        },
+        {
+          path: 'sessions',
+          component: AdminSessionComponent
+        },
+        {
+          path: 'sessions/:id',
+          component: AdminSessionComponent
         }
       ]
     },

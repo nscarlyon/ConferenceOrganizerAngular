@@ -1,0 +1,49 @@
+<h2>Add a session</h2>
+
+<div>
+  <div>Speaker Name: {{proposal.speakerName}}</div>
+  <div>Title: {{proposal.title}}</div>
+</div>
+
+<form [formGroup]="sessionForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label class="">Room:</label>
+    <div>
+      <select *ngIf="!addingNewRoom" class="form-control" formControlName="room">
+        <option *ngFor="let room of rooms">{{room}}</option>
+      </select>
+    </div>
+    <div>
+      <button *ngIf="!addingNewRoom" class="btn btn-info" (click)="addNewRoom()">Add New Room</button>
+      <button *ngIf="addingNewRoom" class="btn btn-info" (click)="addNewRoom()">Remove room</button>
+    </div>
+    <div>
+      <input *ngIf="addingNewRoom" class="form-control" formControlName="room">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="">Start Time:
+      <input id="startTime" type="time" class="form-control" formControlName="startTime">
+    </label>
+    <div *ngIf="sessionForm.get('startTime').invalid && (sessionForm.get('startTime').dirty || sessionForm.get('startTime').touched)" class="alert alert-danger">
+      <div *ngIf="sessionForm.get('startTime').errors.required">
+        E-mail required.
+      </div>
+      <div *ngIf="startTime.errors">
+        Please select a time
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="">End Time:
+      <input class="form-control" type="time" formControlName="endTime">
+    </label>
+    <div *ngIf="sessionForm.get('endTime').invalid && (sessionForm.get('endTime').dirty || sessionForm.get('endTime').touched)" class="alert alert-danger">
+      <div *ngIf="sessionForm.get('endTime').errors.required">
+        Time is required.
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-success" type="submit" [disabled]="sessionForm.pristine || sessionForm.invalid">Submit</button>
+  <button type="button" class="btn btn-danger" (click)="reset()">Clear</button>
+</form>

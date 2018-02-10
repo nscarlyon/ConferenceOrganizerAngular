@@ -13,6 +13,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {ConferenceOrganizerService} from "./services/conference-organizer.service";
 import { AdminScheduleComponent } from './admin/admin-schedule/admin-schedule.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
+import { AdminSessionComponent } from './admin/admin-session/admin-session.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
     AdminProposalsComponent,
     HomeComponent,
     AdminScheduleComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    AdminSessionComponent
   ],
   imports: [
     RouterModule,
