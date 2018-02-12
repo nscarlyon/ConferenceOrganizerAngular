@@ -8,6 +8,9 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class AdminScheduleComponent implements OnInit {
   schedule: any;
+  room: string;
+  startTime: string;
+  endTime: string;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.schedule = {
@@ -68,5 +71,11 @@ export class AdminScheduleComponent implements OnInit {
 
   goToSessionPage(id: number): void {
     this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
+  }
+
+  addRoom(): void {
+  }
+
+  addTimeSlot(): void {
   }
 }
