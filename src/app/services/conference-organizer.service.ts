@@ -45,6 +45,14 @@ export class ConferenceOrganizerService implements OnInit {
 
   postProposal(proposal: any): Observable<any> {
      return this._http
-                .post(`${this._url}speakers/proposals`, proposal, this._options);
-    }
+                .post(`${this._url}/proposals`, proposal, this._options);
+  }
+
+  addSession(session: any): void {
+    this._http.post(`${this._url}schedule/sessions`, session, this._options);
+  }
+
+  editSession(session: any, id: string): void {
+    this._http.put(`${this._url}schedule/sessions/${id}`, session, this._options)
+  }
 }
