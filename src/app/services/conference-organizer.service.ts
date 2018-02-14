@@ -26,6 +26,14 @@ export class ConferenceOrganizerService implements OnInit {
     });
   }
 
+  getSchedule(): Observable<any> {
+    return this._http.get(`${this._url}schedule`, this._options).pipe(catchError((error) => {
+      return "error";
+    })).map((response) => {
+      return response;
+    });
+  }
+
   getProposals(): Observable<any> {
     return this._http
       .get(`${this._url}/proposals`, this._options).pipe(catchError((error) => {
