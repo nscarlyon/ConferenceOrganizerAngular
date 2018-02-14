@@ -3,95 +3,26 @@
 </p>
 
 <div class="card-columns">
-    <div class="card text-white bg-dark">
-      <div class="card-header text-center collapsed" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="headingOne">
-        <h5 class="card-title">Proposal Title - Speaker Name 1</h5>
-        <button class="btn btn-primary">Read More</button>
+    <div *ngFor="let proposal of proposals" class="card text-white bg-dark">
+      <div class="card-header text-center">
+        <h5 class="card-title">{{proposal.title}}- {{proposal.speakerName}}</h5>
       </div>
-      <div id="collapseOne" class="collapse" aria-labelledby="headingOne">
+      <div>
         <div class="card-body">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+          <div>
+            Email: {{proposal.email}}
+          </div>
+          <div>
+            Bio: {{proposal.bio}}
+          </div>
+          <div>
+            Talk Description: {{proposal.description}}
+          </div>
         </div>
       </div>
       <div class="card-footer text-center">
-        <button class="btn btn-success" (click)="goToSessionPage(13)">Add to Schedule</button>
+        <button class="btn btn-success" (click)="goToSessionPage(proposal.id)">Add to Schedule</button>
         <button class="btn btn-danger">Delete Proposal</button>
       </div>
     </div>
-
-    <div class="card text-white bg-dark">
-      <div class="card-header text-center collapsed" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-        <h5 class="card-title">Proposal Title - Speaker Name 2</h5>
-        <button class="btn btn-primary">Read More</button>
-      </div>
-      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo">
-        <div class="card-body">
-          Different Text to change
-        </div>
-      </div>
-      <div class="card-footer text-center">
-        <button class="btn btn-success">Add to Schedule</button>
-        <button class="btn btn-danger">Delete Proposal</button>
-      </div>
-    </div>
-
-  <div class="card text-white bg-dark">
-    <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree" id="headingThree">
-      <h5 class="mb-0">
-        Proposal Title - Speaker Name 3
-        <button class="btn btn-primary">Add to Schedule</button>
-        <button class="btn btn-danger">Delete Proposal</button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-
-  <div class="card text-white bg-dark">
-    <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour" id="headingFour">
-      <h5 class="mb-0">
-        Proposal Title - Speaker Name 4
-        <button class="btn btn-primary">Add to Schedule</button>
-        <button class="btn btn-danger">Delete Proposal</button>
-      </h5>
-    </div>
-    <div id="collapseFour" class="collapse" aria-labelledby="headingFour">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-
-  <div class="card text-white bg-dark">
-    <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive" id="headingFive">
-      <h5 class="mb-0">
-        Proposal Title - Speaker Name 5
-        <button class="btn btn-primary">Add to Schedule</button>
-        <button class="btn btn-danger">Delete Proposal</button>
-      </h5>
-    </div>
-    <div id="collapseFive" class="collapse" aria-labelledby="headingFive">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-
-  <div class="card text-white bg-dark">
-    <div class="card-header collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseSix" id="headingSix">
-      <h5 class="mb-0">
-        Proposal Title - Speaker Name 6
-        <button class="btn btn-primary">Add to Schedule</button>
-        <button class="btn btn-danger">Delete Proposal</button>
-      </h5>
-    </div>
-    <div id="collapseSix" class="collapse" aria-labelledby="headingSix">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
 </div>
