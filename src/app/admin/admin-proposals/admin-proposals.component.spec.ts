@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdminProposalsComponent } from './admin-proposals.component';
+import {RouterTestingModule} from "@angular/router/testing";
+import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('AdminProposalsComponent', () => {
   let component: AdminProposalsComponent;
@@ -8,7 +11,9 @@ describe('AdminProposalsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AdminProposalsComponent ]
+      declarations: [ AdminProposalsComponent ],
+      providers: [ConferenceOrganizerService],
+      imports: [RouterTestingModule, HttpClientTestingModule]
     })
     .compileComponents();
   }));

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import {RouterModule, ActivatedRoute} from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -14,6 +14,7 @@ import {ConferenceOrganizerService} from "./services/conference-organizer.servic
 import { AdminScheduleComponent } from './admin/admin-schedule/admin-schedule.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AdminSessionComponent } from './admin/admin-session/admin-session.component';
+import {RouterTestingModule} from "@angular/router/testing";
 
 @NgModule({
   declarations: [
