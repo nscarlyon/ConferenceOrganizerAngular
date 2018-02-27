@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-admin-session',
@@ -10,24 +11,37 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class AdminSessionComponent implements OnInit {
   sessionForm: FormGroup;
   rooms: string[];
-  addingNewRoom: boolean;
   proposal: any;
+  proposalId: string;
+  timeSlots: any;
+  addedRoom: string;
+  startTime: string;
+  endTime: string;
 
-  constructor(private formBuilder: FormBuilder, private conferenceOrganizerService: ConferenceOrganizerService) {
-  }
-
-  ngOnInit() {
-    this.addingNewRoom = false;
-    this.setRooms();
-    this.setProposal();
+  constructor(private formBuilder: FormBuilder,
+              private conferenceOrganizerService: ConferenceOrganizerService,
+              private activatedRoute: ActivatedRoute,
+              private router: Router)
+  {
     this.createForm();
   }
 
-  private createForm() {
+  ngOnInit() {
+    this.setSessionId();
+    this.setRooms();
+  }
+
+  setSessionId(): void {
+    this.activatedRoute.params.subscribe((params: any) => {
+      this.proposalId = params['id'];
+      this.setProposal();
+    });
+  }
+
+  public createForm() {
     this.sessionForm = this.formBuilder.group({
-      room: [this.rooms[0]],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
+      room: '',
+      timeSlot: ''
     });
   }
 
@@ -36,28 +50,34 @@ export class AdminSessionComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.rooms.some(room => room == this.sessionForm.value.room)) this.addRoomToSchedule();
     this.addSession();
   }
 
   private setRooms() {
-    this.rooms = ["Room A", "Room B"];
+    this.conferenceOrganizerService.getSchedule().subscribe((schedule: any) => {
+      this.rooms = schedule.rooms;
+      this.timeSlots = schedule.timeSlots;
+    });
   }
 
   private setProposal() {
-    this.proposal = {
-      speakerName: "Wonder Woman",
-      title: "The wonders"
-    };
+    this.conferenceOrganizerService.getProposalById(this.proposalId).subscribe((proposal: any) => {
+      this.proposal = proposal;
+    });
   }
 
-  addNewRoom(): void {
-    this.addingNewRoom = !this.addingNewRoom;
+  addRoom(): void {
+    let allRooms: any = this.rooms.push(this.addedRoom);
+    console.log(allRooms);
+    this.conferenceOrganizerService.addRoom(allRooms).subscribe(() => {
+      this.router.navigate([`../sessions/${this.proposalId}`], {relativeTo: this.activatedRoute})
+    });
   }
 
-  private addRoomToSchedule() {
-
+  addTimeSlot(): void {
+    this.router.navigate([`../sessions/${this.proposalId}`], {relativeTo: this.activatedRoute})
   }
+
 
   getTime(time:string):number {
     let translatedTime: number = Number(time);
@@ -65,18 +85,17 @@ export class AdminSessionComponent implements OnInit {
     return translatedTime;
   }
 
-  private addSession() {
+  private addSession(): void {
     let postData: any = this.getPostData();
-    console.log(postData);
+    this.conferenceOrganizerService.addSession(postData).subscribe();
   }
 
   private getPostData(): any {
-    let startTime: string[] = this.sessionForm.value.startTime.split(":");
-    let startHour: number = this.getTime(startTime[0]);
-    let startMin: number = this.getTime(startTime[1]);
-    let endTime: string[] = this.sessionForm.value.endTime.split(":");
-    let endHour: number = this.getTime(endTime[0]);
-    let endMin: number = this.getTime(endTime[1]);
+    let time: string[] = this.sessionForm.value.timeSlot.split("-");
+    let startHour: number = this.getTime(time[0].split(":")[0]);
+    let startMin: number = this.getTime(time[0].split(":")[1]);
+    let endHour: number = this.getTime(time[1].split(":")[0]);
+    let endMin: number = this.getTime(time[1].split(":")[1]);
 
     return {
       speakerName: this.proposal.speakerName,
