@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 
 @Component({
@@ -8,32 +7,46 @@ import {ConferenceOrganizerService} from "../../services/conference-organizer.se
   styleUrls: ['./admin-schedule.component.css']
 })
 export class AdminScheduleComponent implements OnInit {
-  schedule: any;
-  room: string;
-  startTime: string;
-  endTime: string;
+  schedule: any = {};
 
-  constructor(private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private conferenceOrganizerService: ConferenceOrganizerService) {}
-
-  ngOnInit() {
+  constructor(private conferenceOrganizerService: ConferenceOrganizerService) {
     this.setSchedule();
   }
 
+  ngOnInit() {
+  }
+
   setSchedule(): void {
-    this.conferenceOrganizerService.getSchedule().subscribe((response: any) => {
-      this.schedule = response;
-    });
+    // this.conferenceOrganizerService.getSchedule().subscribe((response: any) => {
+    //   this.schedule = response;
+    // });
+    this.schedule =
+      {
+        rooms: ["Room A", "Room B"],
+        timeSlots: ["9", "10", "11"],
+        sessions: [
+            {
+              title: "Title 2",
+              room: "Room B",
+              time: "9"
+            },
+              {
+                title: "Title 3",
+                room: "Room A",
+                time: "10"
+              },
+              {
+                title: "Title 4",
+                room: "Room B",
+                time: "10"
+              }
+        ]
+      }
   }
 
-  goToSessionPage(id: number): void {
-    this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
-  }
-
-  addRoom(): void {
-  }
-
-  addTimeSlot(): void {
+  getCorrectSession(time: string, room: string) {
+    let correctSession: any = this.schedule.sessions.find((session: any) => session.time == time && session.room == room);
+    if (correctSession) return correctSession.title;
+    return "No Session";
   }
 }
