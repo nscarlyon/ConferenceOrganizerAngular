@@ -5,12 +5,12 @@
   <div>Title: {{proposal?.title}}</div>
 </div>
 
-<div [formGroup]="sessionForm" (ngSubmit)="onSubmit()">
+<div *ngIf="schedule" [formGroup]="sessionForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label class="">Select Room:</label>
     <div>
       <select class="form-control" formControlName="room">
-        <option *ngFor="let room of rooms">{{room}}</option>
+        <option *ngFor="let room of schedule.rooms">{{room}}</option>
       </select>
     </div>
     <div>
@@ -22,14 +22,14 @@
     <label class="">Select Time:</label>
     <div>
       <select  class="form-control" formControlName="timeSlot">
-        <option *ngFor="let time of timeSlots">{{time.timeSlot}}</option>
+        <option *ngFor="let timeSlot of schedule.timeSlots">{{timeSlot}}</option>
       </select>
     </div>
     <div>
       <button class="btn btn-info" data-toggle="modal" data-target="#addTimeSlotModal">Add New Time Slot</button>
     </div>
   </div>
-  <button class="btn btn-success" type="submit">Submit</button>
+  <button class="btn btn-success" type="submit" (click)="onSubmit()">Submit</button>
   <button type="button" class="btn btn-danger" (click)="reset()">Clear</button>
 </div>
 
@@ -48,7 +48,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="addRoom()">Add Room</button>
+        <button type="button" class="btn btn-primary" (click)="updateSchedule()">Add Room</button>
       </div>
     </div>
   </div>
@@ -69,7 +69,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="addTimeSlot()">Add Time Slot</button>
+        <button type="button" class="btn btn-primary" (click)="updateSchedule()">Add Time Slot</button>
       </div>
     </div>
   </div>

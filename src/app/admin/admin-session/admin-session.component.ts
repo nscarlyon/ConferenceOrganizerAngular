@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-admin-session',
@@ -10,25 +10,24 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class AdminSessionComponent implements OnInit {
   sessionForm: FormGroup;
-  rooms: string[];
+  schedule: any;
   proposal: any;
   proposalId: string;
-  timeSlots: any;
   addedRoom: string;
   startTime: string;
   endTime: string;
 
   constructor(private formBuilder: FormBuilder,
-              private conferenceOrganizerService: ConferenceOrganizerService,
               private activatedRoute: ActivatedRoute,
-              private router: Router)
+              private conferenceOrganizerService: ConferenceOrganizerService
+              )
+
   {
-    this.createForm();
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.setSessionId();
-    this.setRooms();
+    this.setRoomsAndTimeSlots();
   }
 
   setSessionId(): void {
@@ -40,8 +39,8 @@ export class AdminSessionComponent implements OnInit {
 
   public createForm() {
     this.sessionForm = this.formBuilder.group({
-      room: '',
-      timeSlot: ''
+      room: this.schedule.rooms[0],
+      timeSlot: this.schedule.timeSlots[0]
     });
   }
 
@@ -53,31 +52,84 @@ export class AdminSessionComponent implements OnInit {
     this.addSession();
   }
 
-  private setRooms() {
+  private setRoomsAndTimeSlots() {
     this.conferenceOrganizerService.getSchedule().subscribe((schedule: any) => {
-      this.rooms = schedule.rooms;
-      this.timeSlots = schedule.timeSlots;
+      if (schedule) {
+        this.schedule = schedule;
+      } else {
+        this.schedule = {rooms: [], timeSlots: []};
+      }
+      this.createForm();
     });
   }
 
-  private setProposal() {
+  private setProposal(): void {
     this.conferenceOrganizerService.getProposalById(this.proposalId).subscribe((proposal: any) => {
       this.proposal = proposal;
     });
   }
 
-  addRoom(): void {
-    let allRooms: any = this.rooms.push(this.addedRoom);
-    console.log(allRooms);
-    this.conferenceOrganizerService.addRoom(allRooms).subscribe(() => {
-      this.router.navigate([`../sessions/${this.proposalId}`], {relativeTo: this.activatedRoute})
+  updateSchedule(add: string): void {
+    if(this.addedRoom) this.schedule.rooms.push(this.addedRoom);
+    if(this.validateTime()) {
+      let standardStartTime: string = this.convertMilitaryToStandardTime(this.startTime);
+      let standardEndTime: string = this.convertMilitaryToStandardTime(this.endTime);
+      this.schedule.timeSlots.push(`${standardStartTime}-${standardEndTime}`);
+    }
+    this.addedRoom = "";
+    this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
+      window.location.reload();
     });
   }
 
-  addTimeSlot(): void {
-    this.router.navigate([`../sessions/${this.proposalId}`], {relativeTo: this.activatedRoute})
+  timeSlotConflicts(): boolean {
+    let timeSlot: string = this.convertMilitaryToStandardTime(this.startTime) + "-" + this.convertMilitaryToStandardTime(this.endTime);
+    return this.schedule.timeSlots.includes(timeSlot) || this.isTimeSlotOverLapping();
   }
 
+  private isTimeSlotOverLapping(): boolean {
+    return this.schedule.timeSlots.some((timeSlot: string) => {
+      let splitTime: string[] = timeSlot.split("-");
+      let splitStartTime: string[] = splitTime[0].split(":");
+      let startHour: number = Number(splitStartTime[0]);
+      let startMin: number = Number(splitStartTime[1]);
+      let splitEndTime: string[] = splitTime[1].split(":");
+      let endHour: number = Number(splitEndTime[0]);
+      let endMin: number = Number(splitEndTime[1]);
+
+      let addedStartHour: Number = Number(this.startTime.split(":")[0]);
+      let addedStartMin: Number = Number(this.startTime.split(":")[1]);
+      let addedEndHour: Number = Number(this.endTime.split(":")[0]);
+      let addedEndMin: Number = Number(this.endTime.split(":")[1]);
+
+      return endHour == addedEndHour
+            || ((addedStartHour <= startHour) && (addedEndHour >= endHour))
+            || ((addedStartHour <= startHour) && (addedEndHour == addedStartHour))
+    });
+  }
+
+  validateTime(): boolean {
+    if(!this.startTime || !this.endTime) return false;
+    let splitStartTime: string[] = this.startTime.split(":");
+    let startHour: number = Number(splitStartTime[0]);
+    let startMin: number = Number(splitStartTime[1]);
+    let splitEndTime: string[] = this.endTime.split(":");
+    let endHour: number = Number(splitEndTime[0]);
+    let endMin: number = Number(splitEndTime[1]);
+    return (endHour > startHour)
+        || (endHour == startHour && endMin > startMin);
+  }
+
+  convertMilitaryToStandardTime(time: string): string {
+    let splitTime: string[] = time.split(":");
+    let hour: number = Number(splitTime[0]);
+    let min: string = splitTime[1];
+    if(hour > 12) {
+      let hourConversions: any = {13: 1, 14: 2, 15: 3, 16: 4, 17: 5, 18: 6, 19: 7, 20: 8, 21: 9, 22: 10, 23: 11, 24: 12};
+      hour = hourConversions[hour];
+    }
+    return `${hour}:${min}`;
+  }
 
   getTime(time:string):number {
     let translatedTime: number = Number(time);
@@ -85,26 +137,24 @@ export class AdminSessionComponent implements OnInit {
     return translatedTime;
   }
 
-  private addSession(): void {
+   addSession(): void {
     let postData: any = this.getPostData();
-    this.conferenceOrganizerService.addSession(postData).subscribe();
+    this.conferenceOrganizerService.addSession(postData).subscribe(() => {
+
+    });
   }
 
   private getPostData(): any {
-    let time: string[] = this.sessionForm.value.timeSlot.split("-");
-    let startHour: number = this.getTime(time[0].split(":")[0]);
-    let startMin: number = this.getTime(time[0].split(":")[1]);
-    let endHour: number = this.getTime(time[1].split(":")[0]);
-    let endMin: number = this.getTime(time[1].split(":")[1]);
+    let splitTime: string[] = this.sessionForm.value.timeSlot.split("-");
+    console.log(this.sessionForm.value.timeSlot);
+    console.log(splitTime);
+    let timeSlot: string = this.convertMilitaryToStandardTime(splitTime[0]) + "-" + this.convertMilitaryToStandardTime(splitTime[1]);
 
     return {
       speakerName: this.proposal.speakerName,
       title: this.proposal.title,
       room: this.sessionForm.value.room,
-      startHour: startHour,
-      startMin: startMin,
-      endHour: endHour,
-      endMin: endMin
+      timeSlot: timeSlot,
     };
   }
 }

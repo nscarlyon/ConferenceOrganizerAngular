@@ -49,8 +49,7 @@ export class ConferenceOrganizerService implements OnInit {
   }
 
   addSession(session: any): Observable<any> {
-    let sessionToEdit: any = this._http.get(`${this._url}schedule/findsession`, this._options);
-    return this._http.put(`${this._url}schedule/sessions`, session, this._options);
+    return this._http.post(`${this._url}/sessions`, session, this._options);
   }
 
   editSession(session: any, id: string): void {
@@ -66,11 +65,8 @@ export class ConferenceOrganizerService implements OnInit {
       });
   }
 
-  addRoom(rooms: any):Observable<any> {
-    let postData: any = {
-      rooms: rooms
-    };
-    return this._http.put(`${this._url}schedule/rooms`, postData, this._options).pipe(catchError((error) => {
+  putSchedule(schedule: any): Observable<any> {
+    return this._http.put(`${this._url}schedule/${schedule.id}`, schedule, this._options).pipe(catchError((error) => {
       return "error";
     })).map((response) => {
       return response;

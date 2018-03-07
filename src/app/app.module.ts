@@ -15,6 +15,7 @@ import { AdminScheduleComponent } from './admin/admin-schedule/admin-schedule.co
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AdminSessionComponent } from './admin/admin-session/admin-session.component';
 import {RouterTestingModule} from "@angular/router/testing";
+import {LocationStrategy} from "@angular/common";
 
 @NgModule({
   declarations: [
