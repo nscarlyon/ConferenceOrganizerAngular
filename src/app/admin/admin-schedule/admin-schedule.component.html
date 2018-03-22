@@ -6,9 +6,9 @@
   <div class="box">*</div>
   <div *ngFor="let room of schedule.rooms" class="box">{{room}}</div>
 </div>
-<div *ngFor="let time of schedule.timeSlots" class="flex-column">
+<div *ngFor="let timeSlot of schedule.timeSlots" class="flex-column">
   <div class="flex-row">
-    <div class="box">{{time}}</div>
-    <div *ngFor="let room of schedule.rooms" class="box">{{getCorrectSession(time, room)}}</div>
+    <div class="box">{{timeSlot.standardTime}}</div>
+    <div *ngFor="let room of schedule.rooms" class="box">{{getCorrectSession(timeSlot.standardTime, room)}}</div>
   </div>
 </div>

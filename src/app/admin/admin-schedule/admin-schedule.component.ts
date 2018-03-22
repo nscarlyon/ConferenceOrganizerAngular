@@ -23,7 +23,7 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   getCorrectSession(time: string, room: string) {
-    let correctSession: any = this.schedule.sessions.find((session: any) => session.timeSlot == time && session.room == room);
+    let correctSession: any = this.schedule.sessions.find((session: any) => session.standardTime == time && session.room == room);
     if (correctSession) return `${correctSession.title} - ${correctSession.speakerName}`;
     return "";
   }
