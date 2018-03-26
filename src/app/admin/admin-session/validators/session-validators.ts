@@ -62,7 +62,7 @@ function convertMilitaryToStandardTime(time: string): string {
 }
 
 function isTimeSlotMissing(newTimeSlot: any): boolean {
-  return !newTimeSlot.startHour || !newTimeSlot.startMin || !newTimeSlot.endHour || !newTimeSlot.endMin;
+  return newTimeSlot.startHour < 0 || newTimeSlot.startMin < 0 || newTimeSlot.endHour < 0 || newTimeSlot.endMin < 0;
 }
 //
 // function isValidTimeSlot(newTimeSlot: any): boolean {

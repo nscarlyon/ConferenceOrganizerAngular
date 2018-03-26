@@ -25,3 +25,35 @@
 .flex-row {
   display: flex;
 }
+
+.rooms-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1050;
+  overflow: hidden;
+  outline: 0;
+}
+
+.rooms-header-row {
+  display: flex;
+}
+
+.rooms-container-row {
+  display: flex;
+  margin: 5px;
+}
+
+.order-column {
+  width: 10%;
+  margin-right: 5px;
+}
+
+.delete-column {
+  width: 10%;
+}
+
+.room-column {
+}

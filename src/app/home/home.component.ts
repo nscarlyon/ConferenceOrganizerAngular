@@ -18,11 +18,10 @@ export class HomeComponent implements OnInit {
 
   SetCfpStatus() {
     this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
-      this.cfpStatus = response;
-      if(response == "open") this.cfpMessage = "Call for proposals is open!";
-      else if(response == "closed") this.cfpMessage = "Call for proposals is closed!";
+      this.cfpStatus = response.status;
+      if(response.status == "open") this.cfpMessage = "Call for proposals is open!";
+      else if(response.status == "closed") this.cfpMessage = "Call for proposals is closed!";
       else this.cfpMessage = "Server is down!";
     });
   }
-
 }

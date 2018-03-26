@@ -18,13 +18,13 @@ export class AdminProposalsComponent implements OnInit {
     this.setProposals();
   }
 
-  goToSessionPage(id: number): void {
-    this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
-  }
-
-  private setProposals() {
+  setProposals() {
     this.conferenceOrganizerService.getProposals().subscribe((response: any) => {
       this.proposals = response;
     });
+  }
+
+  goToSessionPage(id: number): void {
+    this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
   }
 }

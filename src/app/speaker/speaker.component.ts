@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormBuilder, Validators, FormControl} from "@angular/forms";
+import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {ConferenceOrganizerService} from "../services/conference-organizer.service";
 
 @Component({
@@ -11,16 +11,18 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
 export class SpeakerComponent implements OnInit {
   proposalForm: FormGroup;
   message: string = "";
+  cfpStatus: any;
 
-  constructor(private formBuilder: FormBuilder, private conferenceOrganizerService: ConferenceOrganizerService) {
+  constructor(private formBuilder: FormBuilder,
+              private conferenceOrganizerService: ConferenceOrganizerService) {
     this.createForm();
   }
 
   ngOnInit() {
-
+    this.setCfpStatus();
   }
 
-  private createForm() {
+  createForm() {
     this.proposalForm = this.formBuilder.group({
       speakerName: ['', Validators.required],
       email: ['', [Validators.email, Validators.required]],
@@ -28,6 +30,12 @@ export class SpeakerComponent implements OnInit {
       title: ['', Validators.required],
       description: ['', Validators.required]
     })
+  }
+
+  setCfpStatus() {
+    this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
+      this.cfpStatus = response.status;
+    });
   }
 
   get email() {

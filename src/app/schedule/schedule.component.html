@@ -1,0 +1,16 @@
+<div *ngIf="schedule && schedule.published">
+  <div class="flex-row">
+    <div class="box">*</div>
+    <div *ngFor="let room of schedule.rooms" class="box">{{room}}</div>
+  </div>
+  <div *ngFor="let timeSlot of schedule.timeSlots" class="flex-column">
+    <div class="flex-row">
+      <div class="box">{{timeSlot.standardTime}}</div>
+      <div *ngFor="let room of schedule.rooms" class="box">{{getCorrectSession(timeSlot.standardTime, room)}}</div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="schedule && !schedule.published">
+  Schedule coming soon!
+</div>

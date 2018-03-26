@@ -1,6 +1,14 @@
 <h2>Submit a Proposal</h2>
 
-<form [formGroup]="proposalForm" (ngSubmit)="onSubmit()">
+<div>
+  {{message}}
+</div>
+
+<div *ngIf="cfpStatus=='closed'">
+  Sorry, we are no longer accepting proposals.
+</div>
+
+<form *ngIf="cfpStatus=='open' && !message" [formGroup]="proposalForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <label class="">Name:
       <input class="form-control" formControlName="speakerName">
@@ -57,7 +65,4 @@
   <button class="btn btn-success" type="submit" [disabled]="proposalForm.pristine || proposalForm.invalid">Submit</button>
   <button type="button" class="btn btn-danger" (click)="reset()">Clear</button>
 </form>
-<div>
-  {{message}}
-</div>
 

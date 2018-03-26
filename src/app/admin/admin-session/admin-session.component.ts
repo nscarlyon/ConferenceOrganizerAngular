@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {roomSelected, timeSlotSelected, validStartTime, validEndTime} from "./validators/session-validators";
 
 @Component({
@@ -20,6 +20,7 @@ export class AdminSessionComponent implements OnInit {
   addingRoom: boolean;
 
   constructor(private formBuilder: FormBuilder,
+              private router: Router,
               private activatedRoute: ActivatedRoute,
               private conferenceOrganizerService: ConferenceOrganizerService
               ) {
@@ -81,13 +82,18 @@ export class AdminSessionComponent implements OnInit {
     }
     if(this.addingTimeSlot) {
       let newTimeSlot: any = this.getNewTimeSlot();
-      if(this.isValidTimeSlot(newTimeSlot) || this.noTimeSlotConflict(newTimeSlot)) {
-        postData.timeSlot = newTimeSlot.standardTime;
+      if(this.isValidTimeSlot(newTimeSlot)) {
+        postData.standardTime = newTimeSlot.standardTime;
         this.schedule.timeSlots.push(newTimeSlot);
-        this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
-      } else console.log("Invalid!");
+        this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
+          console.log("inside subscribe")
+        });
+      }
+    } else {
+      postData.standardTime = this.sessionForm.value.timeSlot;
     }
     this.conferenceOrganizerService.addSession(postData).subscribe(() => {
+      this.router.navigate(["admin/schedule"]);
     });
   }
 
@@ -115,24 +121,27 @@ export class AdminSessionComponent implements OnInit {
   }
 
   isValidTimeSlot(newTimeSlot: any): boolean {
-    if(!newTimeSlot.startHour || !newTimeSlot.startMin || !newTimeSlot.endHour || !newTimeSlot.endMin) return false;
-    return (newTimeSlot.endHour > newTimeSlot.startHour)
-        || (newTimeSlot.endHour == newTimeSlot.startHour && newTimeSlot.endMin > newTimeSlot.startMin);
+    return newTimeSlot.startHour >= 0 || newTimeSlot.startMin >= 0 || newTimeSlot.endHour >= 0 || newTimeSlot.endMin >= 0;
+    // if(!newTimeSlot.startHour || !newTimeSlot.startMin || !newTimeSlot.endHour || !newTimeSlot.endMin) return false;
+    // return (newTimeSlot.endHour > newTimeSlot.startHour)
+    //     || (newTimeSlot.endHour == newTimeSlot.startHour && newTimeSlot.endMin > newTimeSlot.startMin);
   }
-
-  noTimeSlotConflict(newTimeSlot: any): boolean {
-    let isTimeSlotOverLapping: boolean = this.schedule.timeSlots.some((existingTimeSlot: any) => {
-      return existingTimeSlot.endHour == newTimeSlot.endHour
-        || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour >= existingTimeSlot.endHour))
-        || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour == existingTimeSlot.startHour))
-    });
-    return this.schedule.timeSlots.includes(newTimeSlot) || isTimeSlotOverLapping;
-  }
+  //
+  // noTimeSlotConflict(newTimeSlot: any): boolean {
+  //   let isTimeSlotOverLapping: boolean = this.schedule.timeSlots.some((existingTimeSlot: any) => {
+  //     return existingTimeSlot.endHour == newTimeSlot.endHour
+  //       || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour >= existingTimeSlot.endHour))
+  //       || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour == existingTimeSlot.startHour))
+  //   });
+  //   return this.schedule.timeSlots.includes(newTimeSlot) || isTimeSlotOverLapping;
+  // }
 
   private getPostData(): any {
     let postData: any = {};
     postData.speakerName =  this.proposal.speakerName;
+    postData.bio = this.proposal.bio;
     postData.title = this.proposal.title;
+    postData.description = this.proposal.description;
     postData.room = this.sessionForm.value.room;
     postData.standardTime = this.sessionForm.value.timeSlot;
     return postData;

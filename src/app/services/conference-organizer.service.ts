@@ -22,7 +22,23 @@ export class ConferenceOrganizerService implements OnInit {
     return this._http.get(`${this._url}cfp`, this._options).pipe(catchError((error) => {
       return "error";
     })).map((response) => {
-      return response["status"];
+      return response;
+    });
+  }
+
+  openCfp(cfp: any): Observable<any> {
+    return this._http.put(`${this._url}CFP/${cfp.id}`, cfp, this._options).pipe(catchError((error) => {
+      return "error";
+    })).map((response) => {
+      return response;
+    });
+  }
+
+  closeCfp(cfp: any): Observable<any> {
+    return this._http.put(`${this._url}CFP/${cfp.id}`, cfp, this._options).pipe(catchError((error) => {
+      return "error";
+    })).map((response) => {
+      return response;
     });
   }
 
@@ -67,6 +83,31 @@ export class ConferenceOrganizerService implements OnInit {
 
   putSchedule(schedule: any): Observable<any> {
     return this._http.put(`${this._url}schedule/${schedule.id}`, schedule, this._options).pipe(catchError((error) => {
+      return "error";
+    })).map((response) => {
+      return response;
+    });
+  }
+
+  getSessions(): Observable<any> {
+    return this._http
+      .get(`${this._url}/sessions`, this._options).pipe(catchError((error) => {
+        return "error";
+      })).map((response) => {
+        return response;
+      });
+  }
+
+  publishSchedule(schedule: any): Observable<any> {
+    return this._http.put(`${this._url}schedule/publish/${schedule.id}`, schedule, this._options).pipe(catchError((error) => {
+      return "error";
+    })).map((response) => {
+      return response;
+    });
+  }
+
+  unpublishSchedule(schedule: any): Observable<any> {
+    return this._http.put(`${this._url}schedule/unpublish/${schedule.id}`, schedule, this._options).pipe(catchError((error) => {
       return "error";
     })).map((response) => {
       return response;

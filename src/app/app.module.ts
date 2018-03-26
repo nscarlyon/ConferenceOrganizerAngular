@@ -1,8 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {RouterModule, ActivatedRoute} from '@angular/router';
-
+import {RouterModule} from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { SpeakerComponent } from './speaker/speaker.component';
@@ -14,8 +13,8 @@ import {ConferenceOrganizerService} from "./services/conference-organizer.servic
 import { AdminScheduleComponent } from './admin/admin-schedule/admin-schedule.component';
 import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AdminSessionComponent } from './admin/admin-session/admin-session.component';
-import {RouterTestingModule} from "@angular/router/testing";
-import {LocationStrategy} from "@angular/common";
+import { SpeakersListComponent } from './speakers-list/speakers-list.component';
+import { ScheduleComponent } from './schedule/schedule.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +25,9 @@ import {LocationStrategy} from "@angular/common";
     HomeComponent,
     AdminScheduleComponent,
     AdminHomeComponent,
-    AdminSessionComponent
+    AdminSessionComponent,
+    SpeakersListComponent,
+    ScheduleComponent
   ],
   imports: [
     RouterModule,
