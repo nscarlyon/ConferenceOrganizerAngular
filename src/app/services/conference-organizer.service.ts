@@ -95,7 +95,7 @@ export class ConferenceOrganizerService implements OnInit {
   }
 
   publishSchedule(schedule: any): Observable<any> {
-    return this._http.put(`${this._url}schedule/publish/${schedule.id}`, schedule, this._options).pipe(catchError((error) => {
+    return this._http.put(`${this._url}schedule/publish`, schedule, this._options).pipe(catchError((error) => {
       return "error";
     })).map((response) => {
       return response;
@@ -103,7 +103,7 @@ export class ConferenceOrganizerService implements OnInit {
   }
 
   unpublishSchedule(schedule: any): Observable<any> {
-    return this._http.put(`${this._url}schedule/unpublish/${schedule.id}`, schedule, this._options).pipe(catchError((error) => {
+    return this._http.put(`${this._url}schedule/unpublish`, schedule, this._options).pipe(catchError((error) => {
       return "error";
     })).map((response) => {
       return response;
