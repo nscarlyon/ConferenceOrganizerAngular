@@ -71,7 +71,6 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   addRoom(): void {
-    console.log(Number(this.rooms.controls.length + 1));
     this.rooms.push(this.formBuilder.group({roomName: "New Room", roomOrder: Number(this.rooms.controls.length + 1)}));
   }
 
@@ -83,8 +82,9 @@ export class AdminScheduleComponent implements OnInit {
     this.schedule.rooms = this.rooms.controls.map((room: any) => {
       return room.value.roomName;
     });
-    this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
+    this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
       this.toggleEditingRooms();
+      this.schedule = response;
     });
   }
 
