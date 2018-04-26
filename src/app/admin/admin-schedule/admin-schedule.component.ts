@@ -47,7 +47,10 @@ export class AdminScheduleComponent implements OnInit {
 
   setTimeSlotsForm(): void {
     let scheduleTimeSlots: FormGroup[] = this.schedule.timeSlots.map((timeSlot: any) => {
-      return this.formBuilder.group({timeSlot: [{value: timeSlot.standardTime, disabled: true}]});
+      return this.formBuilder.group({
+        timeSlot: timeSlot,
+        standardTime: [{value: timeSlot.standardTime, disabled: true}]
+      });
     });
 
     this.timeSlotsForm = this.formBuilder.group({
@@ -88,10 +91,8 @@ export class AdminScheduleComponent implements OnInit {
     this.rooms.removeAt(roomIndex);
   }
 
-  deleteTimeSlot(timeSlot: any, timeSlotIndex: number): void {
-    let scheduleToRemove: number = this.schedule.timeSlots.findIndex((time) => time.standardTime == timeSlot.get('timeSlot').value);
+  deleteTimeSlot(timeSlotIndex: number): void {
     this.timeSlots.removeAt(timeSlotIndex);
-    this.schedule.timeSlots.splice(scheduleToRemove);
   }
 
   addRoom(): void {
@@ -117,6 +118,7 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   saveTimeSlots(): void {
+    this.schedule.timeSlots = this.timeSlots.controls.map(t => t.get('timeSlot').value);
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
       this.toggleEditingTimeSlots();
       this.schedule = response;

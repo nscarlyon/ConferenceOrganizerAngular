@@ -84,16 +84,16 @@
           <div formArrayName="timeSlots">
             <div class="rooms-container-row" *ngFor="let timeSlot of timeSlots.controls; let i=index" [formGroupName]="i">
               <div class="delete-column">
-                <button class="btn-danger" (click)="deleteTimeSlot(timeSlot, i)">X</button>
+                <button class="btn-danger" (click)="deleteTimeSlot(i)">X</button>
               </div>
               <div class="room-column">
-                <input type="text" formControlName="timeSlot">
+                <input type="text" formControlName="standardTime">
               </div>
             </div>
           </div>
         </div>
         <div>
-          <!--<button class="btn btn-success" (click)="addRoom()">Add Room</button>-->
+          <!--<button class="btn btn-success" (click)="addRoom()">Add Time Slot</button>-->
         </div>
       </div>
       <div class="modal-footer">
