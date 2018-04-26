@@ -4,7 +4,7 @@
     <button *ngIf="!schedule.published" class="btn admin-btn" (click)="publishSchedule()">Publish Schedule</button>
     <button *ngIf="schedule.published" class="btn admin-btn" (click)="unpublishSchedule()">Unpublish Schedule</button>
     <button class="btn admin-btn" (click)="toggleEditingRooms()">Edit Rooms</button>
-    <button class="btn admin-btn">Edit Time Slots</button>
+    <button class="btn admin-btn" (click)="toggleEditingTimeSlots()">Edit Time Slots</button>
   </div>
   <div class="flex-row">
     <div class="box">*</div>
@@ -23,7 +23,7 @@
   Start adding sessions!
 </div>
 
-<div *ngIf="editingRooms" class="rooms-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="editingRooms" class="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -65,3 +65,41 @@
   </div>
 </div>
 
+
+<div *ngIf="editingTimeSlots" class="edit-modal" tabindex="-1" role="dialog" aria-labelledby="timesModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="timesModalLabel">Time Slots</h5>
+        <button type="button" class="close" (click)="toggleEditingTimeSlots()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="schedule && timeSlotsForm" [formGroup]="timeSlotsForm">
+          <div class="rooms-header-row">
+            <div class="delete-column"></div>
+            <div class="room-column">Time Slot</div>
+          </div>
+          <div formArrayName="timeSlots">
+            <div class="rooms-container-row" *ngFor="let timeSlot of timeSlots.controls; let i=index" [formGroupName]="i">
+              <div class="delete-column">
+                <button class="btn-danger" (click)="deleteTimeSlot(timeSlot, i)">X</button>
+              </div>
+              <div class="room-column">
+                <input type="text" formControlName="timeSlot">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <!--<button class="btn btn-success" (click)="addRoom()">Add Room</button>-->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="toggleEditingTimeSlots()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="saveTimeSlots()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

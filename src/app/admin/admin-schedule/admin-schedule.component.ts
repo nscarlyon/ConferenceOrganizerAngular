@@ -12,13 +12,16 @@ import {Router, ActivatedRoute} from "@angular/router";
 export class AdminScheduleComponent implements OnInit {
   schedule: any = {};
   editingRooms: boolean;
+  editingTimeSlots: boolean;
   roomsForm: FormGroup;
+  timeSlotsForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
               private conferenceOrganizerService: ConferenceOrganizerService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
     this.editingRooms = false;
+    this.editingTimeSlots = false;
   }
 
   ngOnInit() {
@@ -29,6 +32,7 @@ export class AdminScheduleComponent implements OnInit {
     this.conferenceOrganizerService.getSchedule().subscribe((response: any) => {
       this.schedule = response;
       this.setRoomsForm();
+      this.setTimeSlotsForm();
     });
   }
 
@@ -39,6 +43,16 @@ export class AdminScheduleComponent implements OnInit {
     this.roomsForm = this.formBuilder.group({
       rooms: this.formBuilder.array(scheduleRooms)
     });
+  }
+
+  setTimeSlotsForm(): void {
+    let scheduleTimeSlots: FormGroup[] = this.schedule.timeSlots.map((timeSlot: any) => {
+      return this.formBuilder.group({timeSlot: [{value: timeSlot.standardTime, disabled: true}]});
+    });
+
+    this.timeSlotsForm = this.formBuilder.group({
+      timeSlots: this.formBuilder.array(scheduleTimeSlots)
+    })
   }
 
   getCorrectSession(time: string, room: string): any {
@@ -66,8 +80,18 @@ export class AdminScheduleComponent implements OnInit {
     this.editingRooms = !this.editingRooms;
   }
 
+  toggleEditingTimeSlots(): void {
+    this.editingTimeSlots = !this.editingTimeSlots;
+  }
+
   deleteRoom(roomIndex: number): void {
     this.rooms.removeAt(roomIndex);
+  }
+
+  deleteTimeSlot(timeSlot: any, timeSlotIndex: number): void {
+    let scheduleToRemove: number = this.schedule.timeSlots.findIndex((time) => time.standardTime == timeSlot.get('timeSlot').value);
+    this.timeSlots.removeAt(timeSlotIndex);
+    this.schedule.timeSlots.splice(scheduleToRemove);
   }
 
   addRoom(): void {
@@ -78,12 +102,23 @@ export class AdminScheduleComponent implements OnInit {
     return this.roomsForm.get('rooms') as FormArray;
   };
 
+  get timeSlots(): FormArray {
+    return this.timeSlotsForm.get('timeSlots') as FormArray;
+  };
+
   saveRooms(): void {
     this.schedule.rooms = this.rooms.controls.map((room: any) => {
       return room.value.roomName;
     });
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
       this.toggleEditingRooms();
+      this.schedule = response;
+    });
+  }
+
+  saveTimeSlots(): void {
+    this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
+      this.toggleEditingTimeSlots();
       this.schedule = response;
     });
   }
