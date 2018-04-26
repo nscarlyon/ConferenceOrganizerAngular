@@ -1,4 +1,4 @@
-<div *ngFor="let speakerSessionGroup of speakerSessionGroups" class="card text-white bg-dark speaker-container">
+<div *ngFor="let speakerSessionGroup of speakerSessionGroups" id="{{speakerSessionGroup[0].split(' ').join('', '-')}}" class="card text-white bg-dark speaker-container">
   <div class="card-header text-center">
     <h5 class="card-title">{{speakerSessionGroup[0]}}</h5>
   </div>
@@ -15,6 +15,12 @@
       <div class="card-body">
         <div>
           Title: {{speakerSession.title}}
+        </div>
+        <div>
+          Time: {{speakerSession.standardTime}}
+        </div>
+        <div>
+          Room: {{speakerSession.room}}
         </div>
         <div>
           Description: {{speakerSession.description}}

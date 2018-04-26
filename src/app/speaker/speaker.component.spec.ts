@@ -32,7 +32,7 @@ describe('SpeakerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should submit speaker proposal', () => {
+  it('should submit speaker session', () => {
     let proposal: any = {
       speakerName: "speaker",
       email: "email@test.com",

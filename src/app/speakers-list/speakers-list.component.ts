@@ -6,6 +6,7 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
   templateUrl: './speakers-list.component.html',
   styleUrls: ['./speakers-list.component.css']
 })
+
 export class SpeakersListComponent implements OnInit {
   sessions: any[];
   speakerSessionGroups: any;

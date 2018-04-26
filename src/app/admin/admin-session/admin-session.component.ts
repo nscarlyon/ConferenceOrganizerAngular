@@ -122,19 +122,7 @@ export class AdminSessionComponent implements OnInit {
 
   isValidTimeSlot(newTimeSlot: any): boolean {
     return newTimeSlot.startHour >= 0 || newTimeSlot.startMin >= 0 || newTimeSlot.endHour >= 0 || newTimeSlot.endMin >= 0;
-    // if(!newTimeSlot.startHour || !newTimeSlot.startMin || !newTimeSlot.endHour || !newTimeSlot.endMin) return false;
-    // return (newTimeSlot.endHour > newTimeSlot.startHour)
-    //     || (newTimeSlot.endHour == newTimeSlot.startHour && newTimeSlot.endMin > newTimeSlot.startMin);
   }
-  //
-  // noTimeSlotConflict(newTimeSlot: any): boolean {
-  //   let isTimeSlotOverLapping: boolean = this.schedule.timeSlots.some((existingTimeSlot: any) => {
-  //     return existingTimeSlot.endHour == newTimeSlot.endHour
-  //       || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour >= existingTimeSlot.endHour))
-  //       || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour == existingTimeSlot.startHour))
-  //   });
-  //   return this.schedule.timeSlots.includes(newTimeSlot) || isTimeSlotOverLapping;
-  // }
 
   private getPostData(): any {
     let postData: any = {};

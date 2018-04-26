@@ -13,7 +13,9 @@
   <div *ngFor="let timeSlot of schedule.timeSlots" class="flex-column">
     <div class="flex-row">
       <div class="box">{{timeSlot.standardTime}}</div>
-      <div *ngFor="let room of schedule.rooms" class="box">{{getCorrectSession(timeSlot.standardTime, room)}}</div>
+      <div *ngFor="let room of schedule.rooms" class="box" (click)="goToEditSessionPage(timeSlot.standardTime, room)">
+        {{getCorrectSession(timeSlot.standardTime, room)}}
+      </div>
     </div>
   </div>
 </div>

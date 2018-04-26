@@ -1,19 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {FormBuilder, FormGroup, FormArray} from "@angular/forms";
+import {Router, ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-admin-schedule',
   templateUrl: './admin-schedule.component.html',
   styleUrls: ['./admin-schedule.component.css']
 })
+
 export class AdminScheduleComponent implements OnInit {
   schedule: any = {};
   editingRooms: boolean;
   roomsForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
-              private conferenceOrganizerService: ConferenceOrganizerService) {
+              private conferenceOrganizerService: ConferenceOrganizerService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
     this.editingRooms = false;
   }
 
@@ -37,10 +41,15 @@ export class AdminScheduleComponent implements OnInit {
     });
   }
 
-  getCorrectSession(time: string, room: string) {
+  getCorrectSession(time: string, room: string): any {
     let correctSession: any = this.schedule.sessions.find((session: any) => session.standardTime == time && session.room == room);
     if (correctSession) return `${correctSession.title} - ${correctSession.speakerName}`;
     return "";
+  }
+
+  goToEditSessionPage(time: string, room: string): void {
+    let session: any = this.schedule.sessions.find((session: any) => session.standardTime == time && session.room == room);
+    this.router.navigate([`../edit-session/${session.id}`], {relativeTo: this.activatedRoute})
   }
 
   publishSchedule(): void {

@@ -34,7 +34,7 @@ describe('AdminProposalsComponent', () => {
 
   it('should set all proposals', () => {
     let proposalOne: any = {
-      id: "proposal-1",
+      id: "session-1",
       title: "title-1",
       speakerName: "speaker-1",
       email: "email-1",
@@ -43,7 +43,7 @@ describe('AdminProposalsComponent', () => {
     };
 
     let proposalTwo: any = {
-      id: "proposal-1",
+      id: "session-1",
       title: "title-1",
       speakerName: "speaker-1",
       email: "email-1",

@@ -68,10 +68,6 @@ export class ConferenceOrganizerService implements OnInit {
     return this._http.post(`${this._url}/sessions`, session, this._options);
   }
 
-  editSession(session: any, id: string): void {
-    this._http.put(`${this._url}schedule/sessions/${id}`, session, this._options)
-  }
-
   getProposalById(proposalId: string): Observable<any> {
     return this._http
       .get(`${this._url}/proposals/${proposalId}`, this._options).pipe(catchError((error) => {
@@ -112,5 +108,23 @@ export class ConferenceOrganizerService implements OnInit {
     })).map((response) => {
       return response;
     });
+  }
+
+  getSessionById(sessionId: string): Observable<any> {
+    return this._http
+      .get(`${this._url}/sessions/${sessionId}`, this._options).pipe(catchError((error) => {
+        return "error";
+      })).map((response) => {
+        return response;
+      });
+  }
+
+  deleteSession(sessionId: string): Observable<any> {
+    return this._http
+      .delete(`${this._url}/sessions/${sessionId}`, this._options).pipe(catchError((error) => {
+        return "error";
+      })).map((response) => {
+        return response;
+      });
   }
 }

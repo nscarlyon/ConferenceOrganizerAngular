@@ -15,6 +15,7 @@ import { AdminHomeComponent } from './admin/admin-home/admin-home.component';
 import { AdminSessionComponent } from './admin/admin-session/admin-session.component';
 import { SpeakersListComponent } from './speakers-list/speakers-list.component';
 import { ScheduleComponent } from './schedule/schedule.component';
+import { EditSessionComponent } from './admin/edit-session/edit-session.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ScheduleComponent } from './schedule/schedule.component';
     AdminHomeComponent,
     AdminSessionComponent,
     SpeakersListComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    EditSessionComponent
   ],
   imports: [
     RouterModule,
