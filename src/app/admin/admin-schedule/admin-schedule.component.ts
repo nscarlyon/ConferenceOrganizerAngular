@@ -54,7 +54,8 @@ export class AdminScheduleComponent implements OnInit {
     });
 
     this.timeSlotsForm = this.formBuilder.group({
-      timeSlots: this.formBuilder.array(scheduleTimeSlots)
+      timeSlots: this.formBuilder.array(scheduleTimeSlots),
+      timeSlotsToAdd: this.formBuilder.array([])
     })
   }
 
@@ -95,17 +96,32 @@ export class AdminScheduleComponent implements OnInit {
     this.timeSlots.removeAt(timeSlotIndex);
   }
 
+  deleteTimeSlotToAdd(timeSlotToAddIndex: number): void {
+    this.timeSlotsToAdd.removeAt(timeSlotToAddIndex);
+  }
+
   addRoom(): void {
     this.rooms.push(this.formBuilder.group({roomName: "New Room", roomOrder: Number(this.rooms.controls.length + 1)}));
   }
 
+  addTimeSlot(): void {
+    this.timeSlotsToAdd.push(this.formBuilder.group({
+      startTime: "",
+      endTime: ""
+    }))
+  }
+
   get rooms(): FormArray {
     return this.roomsForm.get('rooms') as FormArray;
-  };
+  }
 
   get timeSlots(): FormArray {
     return this.timeSlotsForm.get('timeSlots') as FormArray;
-  };
+  }
+
+  get timeSlotsToAdd(): FormArray {
+    return this.timeSlotsForm.get('timeSlotsToAdd') as FormArray;
+  }
 
   saveRooms(): void {
     this.schedule.rooms = this.rooms.controls.map((room: any) => {
@@ -118,11 +134,41 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   saveTimeSlots(): void {
-    this.schedule.timeSlots = this.timeSlots.controls.map(t => t.get('timeSlot').value);
+    let newTimeSlots: any[] = this.getNewTimeSlot();
+    let currentTimeSlots: any[] = this.timeSlots.controls.map(t => t.get('timeSlot').value);
+    this.schedule.timeSlots = currentTimeSlots.concat(newTimeSlots);
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
       this.toggleEditingTimeSlots();
       this.schedule = response;
+      this.setTimeSlotsForm();
     });
+  }
+
+
+  getNewTimeSlot(): any[] {
+    let newTimeSlots: any[] = this.timeSlotsToAdd.controls.map(t => {
+      let timeSlot: any = {};
+      let startTime: string = t.value.startTime;
+      let endTime: string = t.value.endTime;
+      timeSlot.standardTime = `${this.convertMilitaryToStandardTime(startTime)}-${this.convertMilitaryToStandardTime(endTime)}`;
+      timeSlot.startHour = Number(startTime.split(":")[0]);
+      timeSlot.startMin = Number(startTime.split(":")[1]);
+      timeSlot.endHour = Number(endTime.split(":")[0]);
+      timeSlot.endMin = Number(endTime.split(":")[1]);
+      return timeSlot;
+    });
+    return newTimeSlots;
+  }
+
+  convertMilitaryToStandardTime(time: string): string {
+    let splitTime: string[] = time.split(":");
+    let hour: number = Number(splitTime[0]);
+    let min: string = splitTime[1];
+    if(hour > 12) {
+      let hourConversions: any = {13: 1, 14: 2, 15: 3, 16: 4, 17: 5, 18: 6, 19: 7, 20: 8, 21: 9, 22: 10, 23: 11, 24: 12};
+      hour = hourConversions[hour];
+    }
+    return `${hour}:${min}`;
   }
 
   orderRooms(): void {

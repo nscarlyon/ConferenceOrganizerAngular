@@ -23,7 +23,8 @@
   Start adding sessions!
 </div>
 
-<div *ngIf="editingRooms" class="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div *ngIf="editingRooms" class="edit-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -45,7 +46,8 @@
                 <button class="btn-danger" (click)="deleteRoom(i)">X</button>
               </div>
               <div class="order-column">
-                <input type="text" value="{{room.value.roomOrder}}" formControlName="roomOrder" (change)="orderRooms(room, index)">
+                <input type="text" value="{{room.value.roomOrder}}" formControlName="roomOrder"
+                       (change)="orderRooms(room, index)">
               </div>
               <div class="room-column">
                 <input type="text" value="{{room.value.roomName}}" formControlName="roomName">
@@ -66,7 +68,8 @@
 </div>
 
 
-<div *ngIf="editingTimeSlots" class="edit-modal" tabindex="-1" role="dialog" aria-labelledby="timesModalLabel" aria-hidden="true">
+<div *ngIf="editingTimeSlots" class="edit-modal" tabindex="-1" role="dialog" aria-labelledby="timesModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -82,7 +85,8 @@
             <div class="room-column">Time Slot</div>
           </div>
           <div formArrayName="timeSlots">
-            <div class="rooms-container-row" *ngFor="let timeSlot of timeSlots.controls; let i=index" [formGroupName]="i">
+            <div class="rooms-container-row" *ngFor="let timeSlot of timeSlots.controls; let i=index"
+                 [formGroupName]="i">
               <div class="delete-column">
                 <button class="btn-danger" (click)="deleteTimeSlot(i)">X</button>
               </div>
@@ -91,9 +95,21 @@
               </div>
             </div>
           </div>
+          <div formArrayName="timeSlotsToAdd">
+            <div class="rooms-container-row" *ngFor="let timeSlotToAdd of timeSlotsToAdd.controls; let i=index"
+                 [formGroupName]="i">
+              <div class="delete-column">
+                <button class="btn-danger" (click)="deleteTimeSlotToAdd(i)">X</button>
+              </div>
+              <div class="room-column">
+                <label>Start Time</label><input type="time" formControlName="startTime">
+                <label>End Time</label><input type="time" formControlName="endTime">
+              </div>
+            </div>
+          </div>
         </div>
         <div>
-          <!--<button class="btn btn-success" (click)="addRoom()">Add Time Slot</button>-->
+          <button class="btn btn-success" (click)="addTimeSlot()">Add Time Slot</button>
         </div>
       </div>
       <div class="modal-footer">
