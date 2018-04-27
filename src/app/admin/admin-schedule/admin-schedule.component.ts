@@ -144,7 +144,6 @@ export class AdminScheduleComponent implements OnInit {
     });
   }
 
-
   getNewTimeSlot(): any[] {
     let newTimeSlots: any[] = this.timeSlotsToAdd.controls.map(t => {
       let timeSlot: any = {};

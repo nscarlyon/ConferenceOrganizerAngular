@@ -1,11 +1,16 @@
 <p>
   All Proposals
 </p>
-
 <div class="card-columns">
     <div *ngFor="let proposal of proposals" class="card text-white bg-dark">
       <div class="card-header text-center">
         <h5 class="card-title">{{proposal.title}}- {{proposal.speakerName}}</h5>
+        <div *ngIf="proposal.scheduledTimes">
+          <div *ngFor="let scheduledTime of proposal.scheduledTimes">
+            <strong>Room:</strong> {{scheduledTime.room}}
+            <strong>Time:</strong> {{scheduledTime.standardTime}}
+          </div>
+        </div>
       </div>
       <div>
         <div class="card-body">
