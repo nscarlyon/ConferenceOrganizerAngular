@@ -103,11 +103,16 @@ export class AdminSessionComponent implements OnInit {
     let timeSlot: any = {};
     let startTime: string = this.sessionForm.value.startTime;
     let endTime: string = this.sessionForm.value.endTime;
-    timeSlot.standardTime = `${this.convertMilitaryToStandardTime(startTime)}-${this.convertMilitaryToStandardTime(endTime)}`;
     timeSlot.startHour = Number(startTime.split(":")[0]);
     timeSlot.startMin = Number(startTime.split(":")[1]);
     timeSlot.endHour = Number(endTime.split(":")[0]);
     timeSlot.endMin = Number(endTime.split(":")[1]);
+    let standardStartTime = this.convertMilitaryToStandardTime(startTime);
+    let standardEndTime = this.convertMilitaryToStandardTime(endTime);
+    timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
+    timeSlot.endHour <= 11
+      ? timeSlot.standardTime+= " A.M"
+      : timeSlot.standardTime+=" P.M";
     return timeSlot;
   }
 

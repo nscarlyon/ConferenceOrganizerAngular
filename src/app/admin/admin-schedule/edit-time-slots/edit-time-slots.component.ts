@@ -61,8 +61,8 @@ export class EditTimeSlotsComponent implements OnInit {
     let currentTimeSlots: any[] = this.timeSlots.controls.map(t => t.get('timeSlot').value);
     this.schedule.timeSlots = currentTimeSlots.concat(newTimeSlots);
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
-      this.closeEditingTimeSlots();
       this.schedule = response;
+      this.closeEditingTimeSlots();
       this.setTimeSlotsForm();
     });
   }
@@ -72,11 +72,17 @@ export class EditTimeSlotsComponent implements OnInit {
       let timeSlot: any = {};
       let startTime: string = t.value.startTime;
       let endTime: string = t.value.endTime;
-      timeSlot.standardTime = `${this.convertMilitaryToStandardTime(startTime)}-${this.convertMilitaryToStandardTime(endTime)}`;
       timeSlot.startHour = Number(startTime.split(":")[0]);
       timeSlot.startMin = Number(startTime.split(":")[1]);
       timeSlot.endHour = Number(endTime.split(":")[0]);
       timeSlot.endMin = Number(endTime.split(":")[1]);
+      let standardStartTime = this.convertMilitaryToStandardTime(startTime);
+      let standardEndTime = this.convertMilitaryToStandardTime(endTime);
+      timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
+      console.log(timeSlot.endHour);
+      timeSlot.endHour <= 11
+        ? timeSlot.standardTime+= " A.M"
+        : timeSlot.standardTime+=" P.M";
       return timeSlot;
     });
     return newTimeSlots;
