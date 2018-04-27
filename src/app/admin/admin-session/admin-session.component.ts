@@ -41,13 +41,13 @@ export class AdminSessionComponent implements OnInit {
     });
   }
 
-  private setProposal(): void {
+  setProposal(): void {
     this.conferenceOrganizerService.getProposalById(this.proposalId).subscribe((proposal: any) => {
       this.proposal = proposal;
     });
   }
 
-  private setRoomsAndTimeSlots() {
+  setRoomsAndTimeSlots() {
     this.conferenceOrganizerService.getSchedule().subscribe((schedule: any) => {
       if (schedule) this.schedule = schedule;
       else this.schedule = {rooms: [], timeSlots: []};

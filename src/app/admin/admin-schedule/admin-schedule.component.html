@@ -5,7 +5,7 @@
     <button *ngIf="schedule.published" class="btn admin-btn" (click)="unpublishSchedule()">Unpublish Schedule</button>
     <button class="btn admin-btn" (click)="toggleEditingRooms()">Edit Rooms</button>
     <button class="btn admin-btn" (click)="toggleEditingTimeSlots()">Edit Time Slots</button>
-    <button class="btn admin-btn">Add Break</button>
+    <button class="btn admin-btn" (click)="toggleAddingBreak()">Add Break</button>
   </div>
   <div class="flex-row">
     <div class="box">*</div>
@@ -48,4 +48,12 @@
      aria-labelledby="timesModalLabel"
      aria-hidden="true">
   <app-edit-time-slots [schedule]="schedule" (editingTimeSlots)="toggleEditingTimeSlots()"></app-edit-time-slots>
+</div>
+<div *ngIf="addingBreak"
+     class="edit-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="breakModalLabel"
+     aria-hidden="true">
+  <app-add-break [schedule]="schedule" (addingBreak)="toggleAddingBreak()"></app-add-break>
 </div>

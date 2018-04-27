@@ -12,6 +12,7 @@ export class AdminScheduleComponent implements OnInit {
   schedule: any = {};
   editingRooms: boolean;
   editingTimeSlots: boolean;
+  addingBreak: boolean;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService,
               private router: Router,
@@ -76,5 +77,9 @@ export class AdminScheduleComponent implements OnInit {
 
   toggleEditingTimeSlots(): void {
     this.editingTimeSlots = !this.editingTimeSlots;
+  }
+
+  toggleAddingBreak(): void {
+    this.addingBreak = !this.addingBreak;
   }
 }

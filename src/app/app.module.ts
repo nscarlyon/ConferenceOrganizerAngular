@@ -18,6 +18,7 @@ import { ScheduleComponent } from './schedule/schedule.component';
 import { EditSessionComponent } from './admin/edit-session/edit-session.component';
 import { EditRoomsComponent } from './admin/admin-schedule/edit-rooms/edit-rooms.component';
 import { EditTimeSlotsComponent } from './admin/admin-schedule/edit-time-slots/edit-time-slots.component';
+import { AddBreakComponent } from './admin/admin-schedule/add-break/add-break.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { EditTimeSlotsComponent } from './admin/admin-schedule/edit-time-slots/e
     ScheduleComponent,
     EditSessionComponent,
     EditRoomsComponent,
-    EditTimeSlotsComponent
+    EditTimeSlotsComponent,
+    AddBreakComponent
   ],
   imports: [
     RouterModule,

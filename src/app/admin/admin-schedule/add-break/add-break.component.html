@@ -1,0 +1,29 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="breakModalLabel">Add Break</h5>
+      <button type="button" class="close" (click)="closeAddingBreak()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="schedule && breakForm" [formGroup]="breakForm">
+          <div class="form-group">
+            <label>Break Title
+              <input type="text" formControlName="title">
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Select Time:</label>
+            <select class="form-control" formControlName="standardTime">
+              <option>Select Time Slot</option>
+              <option *ngFor="let timeSlot of schedule.timeSlots">{{timeSlot.standardTime}}</option>
+            </select>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeAddingBreak()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="saveBreak()">Save changes</button>
+    </div>
+  </div>

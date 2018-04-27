@@ -64,20 +64,4 @@ function convertMilitaryToStandardTime(time: string): string {
 function isTimeSlotMissing(newTimeSlot: any): boolean {
   return newTimeSlot.startHour < 0 || newTimeSlot.startMin < 0 || newTimeSlot.endHour < 0 || newTimeSlot.endMin < 0;
 }
-//
-// function isValidTimeSlot(newTimeSlot: any): boolean {
-//   if(!newTimeSlot.startHour || !newTimeSlot.startMin || !newTimeSlot.endHour || !newTimeSlot.endMin) return false;
-//   return (newTimeSlot.endHour > newTimeSlot.startHour)
-//     || (newTimeSlot.endHour == newTimeSlot.startHour && newTimeSlot.endMin > newTimeSlot.startMin);
-// }
-//
-// function noTimeSlotConflict(newTimeSlot: any): boolean {
-//   let isTimeSlotOverLapping: boolean = this.schedule.timeSlots.some((existingTimeSlot: string) => {
-//     return existingTimeSlot.endHour == newTimeSlot.endHour
-//       || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour >= existingTimeSlot.endHour))
-//       || ((newTimeSlot.startHour <= existingTimeSlot.startHour) && (newTimeSlot.endHour == existingTimeSlot.startHour))
-//   });
-//   return this.schedule.timeSlots.includes(timeSlot) || isTimeSlotOverLapping;
-// }
-
 
