@@ -1,0 +1,48 @@
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="timesModalLabel">Time Slots</h5>
+      <button type="button" class="close" (click)="closeEditingTimeSlots()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="schedule && timeSlotsForm" [formGroup]="timeSlotsForm">
+        <div class="rooms-header-row">
+          <div class="delete-column"></div>
+          <div class="room-column">Time Slot</div>
+        </div>
+        <div formArrayName="timeSlots">
+          <div class="rooms-container-row" *ngFor="let timeSlot of timeSlots.controls; let i=index"
+               [formGroupName]="i">
+            <div class="delete-column">
+              <button class="btn-danger" (click)="deleteTimeSlot(i)">X</button>
+            </div>
+            <div class="room-column">
+              <input type="text" formControlName="standardTime">
+            </div>
+          </div>
+        </div>
+        <div formArrayName="timeSlotsToAdd">
+          <div class="rooms-container-row" *ngFor="let timeSlotToAdd of timeSlotsToAdd.controls; let i=index"
+               [formGroupName]="i">
+            <div class="delete-column">
+              <button class="btn-danger" (click)="deleteTimeSlotToAdd(i)">X</button>
+            </div>
+            <div class="room-column">
+              <label>Start Time</label><input type="time" formControlName="startTime">
+              <label>End Time</label><input type="time" formControlName="endTime">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-success" (click)="addTimeSlot()">Add Time Slot</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeEditingTimeSlots()">Cancel</button>
+      <button type="button" class="btn btn-primary" (click)="saveTimeSlots()">Save changes</button>
+    </div>
+  </div>
+</div>

@@ -63,31 +63,31 @@ describe('AdminScheduleComponent', () => {
     let correctSession: any = component.getCorrectSession("10:00-11:00", "Room B");
     expect(correctSession).toEqual("title-2 - speaker-2")
   });
-
-  it('should delete room', () => {
-    spyOn(conferenceOrganizerService, "putSchedule").and.returnValue(Observable.of());
-    component.setRoomsForm();
-    component.deleteRoom(0);
-    component.saveRooms();
-    expect(component.schedule.rooms).toEqual(["Room B"]);
-    expect(conferenceOrganizerService.putSchedule as Spy).toHaveBeenCalledWith(component.schedule);
-  });
-
-  it('should add room', () => {
-    component.setRoomsForm();
-    component.addRoom();
-    component.saveRooms();
-    expect(component.schedule.rooms.length).toEqual(3);
-  });
-
-  it('should order rooms', () => {
-    component.setRoomsForm();
-    component.rooms.push(FormBuilder.prototype.group({roomName: "Room C", roomOrder: 3}));
-    component.rooms.controls[0].value.roomOrder = 3;
-    component.rooms.controls[2].value.roomOrder = 1;
-    component.orderRooms();
-    component.saveRooms();
-    expect(component.schedule.rooms[0]).toEqual("Room C");
-    expect(component.schedule.rooms[2]).toEqual("Room A");
-  })
+  //
+  // it('should delete room', () => {
+  //   spyOn(conferenceOrganizerService, "putSchedule").and.returnValue(Observable.of());
+  //   component.setRoomsForm();
+  //   component.deleteRoom(0);
+  //   component.saveRooms();
+  //   expect(component.schedule.rooms).toEqual(["Room B"]);
+  //   expect(conferenceOrganizerService.putSchedule as Spy).toHaveBeenCalledWith(component.schedule);
+  // });
+  //
+  // it('should add room', () => {
+  //   component.setRoomsForm();
+  //   component.addRoom();
+  //   component.saveRooms();
+  //   expect(component.schedule.rooms.length).toEqual(3);
+  // });
+  //
+  // it('should order rooms', () => {
+  //   component.setRoomsForm();
+  //   component.rooms.push(FormBuilder.prototype.group({roomName: "Room C", roomOrder: 3}));
+  //   component.rooms.controls[0].value.roomOrder = 3;
+  //   component.rooms.controls[2].value.roomOrder = 1;
+  //   component.orderRooms();
+  //   component.saveRooms();
+  //   expect(component.schedule.rooms[0]).toEqual("Room C");
+  //   expect(component.schedule.rooms[2]).toEqual("Room A");
+  // })
 });
