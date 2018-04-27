@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder} from "@angular/forms";
 
 @Component({
   selector: 'app-edit-session',

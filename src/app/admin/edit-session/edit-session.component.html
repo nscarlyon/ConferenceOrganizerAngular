@@ -1,69 +1,32 @@
-<h2>Edit session</h2>
+<h2>Session</h2>
 
 <button class="btn btn-danger" (click)="deleteSession()">Delete Session</button>
-<div>
-  <div>Speaker Name: {{session?.speakerName}}</div>
-  <div>Title: {{session?.title}}</div>
+<div *ngIf="session" class="card text-white bg-dark session-container">
+    <div class="card-body">
+      <h5 class="card-title text-center">Speaker Details</h5>
+      <div>
+        Name: {{session.speakerName}}
+      </div>
+      <div>
+        Email: {{session.email}}
+      </div>
+      <div>
+        Biography: {{session.bio}}
+      </div>
+    </div>
+      <div class="card-body">
+        <h5 class="card-title text-center">Session Details</h5>
+        <div>
+          Title: {{session.title}}
+        </div>
+        <div>
+          Room: {{session.room}}
+        </div>
+        <div>
+          Time: {{session.standardTime}}
+        </div>
+        <div>
+          Description: {{session.description}}
+        </div>
+      </div>
 </div>
-
-<!--<div *ngIf="schedule" [formGroup]="sessionForm" (ngSubmit)="onSubmit()">-->
-  <!--<div class="form-group" *ngIf="!addingRoom">-->
-    <!--<label class="">Select Room:</label>-->
-    <!--<div>-->
-      <!--<select class="form-control" formControlName="room">-->
-        <!--<option>Select Room</option>-->
-        <!--<option *ngFor="let room of schedule.rooms">{{room}}</option>-->
-      <!--</select>-->
-    <!--</div>-->
-    <!--<div>-->
-      <!--<button class="btn btn-info" (click)="toggleAddingRoom()">Add New Room</button>-->
-    <!--</div>-->
-    <!--<div *ngIf="sessionForm.get('room').invalid && (sessionForm.get('room').dirty || sessionForm.get('room').touched)"-->
-         <!--class="alert alert-danger">-->
-      <!--<div *ngIf="sessionForm.get('room').errors.noRoom">-->
-        <!--Please select a room.-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <!--<div class="form-group" *ngIf="addingRoom">-->
-    <!--<label>Room Name:</label><input type="text" formControlName="room">-->
-    <!--<button class="btn btn-danger" (click)="toggleAddingRoom()">Remove Room</button>-->
-    <!--<div *ngIf="sessionForm.get('room').invalid && (sessionForm.get('room').dirty || sessionForm.get('room').touched)"-->
-         <!--class="alert alert-danger">-->
-      <!--<div *ngIf="sessionForm.get('room').errors.required && addingRoom">-->
-        <!--Name is required.-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <!--<div class="form-group" *ngIf="!addingTimeSlot">-->
-    <!--<label class="">Select Time:</label>-->
-    <!--<select class="form-control" formControlName="timeSlot">-->
-      <!--<option>Select Time Slot</option>-->
-      <!--<option *ngFor="let timeSlot of schedule.timeSlots">{{timeSlot.standardTime}}</option>-->
-    <!--</select>-->
-    <!--<div>-->
-      <!--<button class="btn btn-info" (click)="toggleAddingTimeSlot()">Add New Time Slot</button>-->
-    <!--</div>-->
-    <!--<div *ngIf="sessionForm.get('timeSlot').invalid && (sessionForm.get('timeSlot').dirty || sessionForm.get('timeSlot').touched)"-->
-         <!--class="alert alert-danger">-->
-      <!--<div *ngIf="sessionForm.get('timeSlot').errors.noTimeSlot">-->
-        <!--Please select a time slot.-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <!--<div class="form-group" *ngIf="addingTimeSlot">-->
-    <!--<label>Start Time: </label><input class="form-control" type="time" placeholder="Time Slot" formControlName="startTime">-->
-    <!--<label>End Time: </label> <input class="form-control" type="time" placeholder="Time Slot" formControlName="endTime">-->
-    <!--<button class="btn btn-danger" (click)="toggleAddingTimeSlot()">Remove Time Slot</button>-->
-    <!--<div *ngIf="isTimeSlotInvalid()"-->
-         <!--class="alert alert-danger">-->
-      <!--<div *ngIf="sessionForm.get('startTime').errors.timeSlotMissing">-->
-        <!--{{sessionForm.get('startTime').errors.timeSlotMissing.value}}-->
-      <!--</div>-->
-    <!--</div>-->
-  <!--</div>-->
-  <!--<button class="btn btn-success" type="submit" (click)="onSubmit()">Submit</button>-->
-<!--</div>-->

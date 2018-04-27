@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../services/conference-organizer.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-speakers-list',
@@ -10,13 +11,26 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
 export class SpeakersListComponent implements OnInit {
   sessions: any[];
   speakerSessionGroups: any;
+  fragment: string;
 
-  constructor(private conferenceOrganizerService: ConferenceOrganizerService) {
+  constructor(private conferenceOrganizerService: ConferenceOrganizerService,
+              private activatedRoute: ActivatedRoute) {
     this.sessions = [];
   }
 
   ngOnInit() {
     this.setSessions();
+    this.activatedRoute.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+    })
+  }
+
+  ngAfterViewChecked(): void {
+    try {
+      if(this.fragment) {
+        document.querySelector('#' + this.fragment).scrollIntoView();
+      }
+    } catch (e) { }
   }
 
   setSessions(): void {

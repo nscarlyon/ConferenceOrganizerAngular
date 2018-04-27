@@ -129,6 +129,7 @@ export class AdminSessionComponent implements OnInit {
   private getPostData(): any {
     let postData: any = {};
     postData.speakerName =  this.proposal.speakerName;
+    postData.email = this.proposal.email;
     postData.proposalId = this.proposal.id;
     postData.bio = this.proposal.bio;
     postData.title = this.proposal.title;
