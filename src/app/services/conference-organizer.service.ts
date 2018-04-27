@@ -127,4 +127,13 @@ export class ConferenceOrganizerService implements OnInit {
         return response;
       });
   }
+
+  updateProposal(proposal: any): Observable<any> {
+    return this._http
+      .put(`${this._url}/proposals`, proposal, this._options).pipe(catchError((error) => {
+        return "error";
+      })).map((response) => {
+        return response;
+      });
+  }
 }

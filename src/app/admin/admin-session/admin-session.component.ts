@@ -9,6 +9,7 @@ import {roomSelected, timeSlotSelected, validStartTime, validEndTime} from "./va
   templateUrl: './admin-session.component.html',
   styleUrls: ['./admin-session.component.css']
 })
+
 export class AdminSessionComponent implements OnInit {
   sessionForm: FormGroup;
   schedule: any;
@@ -86,13 +87,14 @@ export class AdminSessionComponent implements OnInit {
         postData.standardTime = newTimeSlot.standardTime;
         this.schedule.timeSlots.push(newTimeSlot);
         this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
-          console.log("inside subscribe")
         });
       }
     } else {
       postData.standardTime = this.sessionForm.value.timeSlot;
     }
     this.conferenceOrganizerService.addSession(postData).subscribe(() => {
+      this.proposal.scheduledTimes.push({room: postData.room, standardTime: postData.standardTime});
+      this.conferenceOrganizerService.updateProposal(this.proposal).subscribe();
       this.router.navigate(["admin/schedule"]);
     });
   }
@@ -127,6 +129,7 @@ export class AdminSessionComponent implements OnInit {
   private getPostData(): any {
     let postData: any = {};
     postData.speakerName =  this.proposal.speakerName;
+    postData.proposalId = this.proposal.id;
     postData.bio = this.proposal.bio;
     postData.title = this.proposal.title;
     postData.description = this.proposal.description;
