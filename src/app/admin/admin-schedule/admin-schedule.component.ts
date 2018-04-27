@@ -44,7 +44,6 @@ export class AdminScheduleComponent implements OnInit {
     });
     if (correctSession) {
       if (!correctSession.break) return `${correctSession.title} - ${correctSession.speakerName}`;
-      if (correctSession.break) return correctSession.title;
     }
     return "";
   }

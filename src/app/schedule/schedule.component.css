@@ -25,3 +25,14 @@
 .flex-row {
   display: flex;
 }
+
+.break {
+  color: #fff;
+  background-color: #d98733;
+  font-size: 150%;
+  margin: 5px 0;
+  border-radius: 5px;
+  padding: 20px;
+  flex: 1;
+  text-align: center;
+}

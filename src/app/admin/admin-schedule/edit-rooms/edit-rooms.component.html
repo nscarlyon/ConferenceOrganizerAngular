@@ -10,17 +10,12 @@
       <div *ngIf="schedule && roomsForm" [formGroup]="roomsForm">
         <div class="rooms-header-row">
           <div class="delete-column"></div>
-          <div class="order-column">Order</div>
           <div class="room-column">Room Name</div>
         </div>
         <div formArrayName="rooms">
           <div class="rooms-container-row" *ngFor="let room of rooms.controls; let i=index" [formGroupName]="i">
             <div class="delete-column">
               <button class="btn-danger" (click)="deleteRoom(i)">X</button>
-            </div>
-            <div class="order-column">
-              <input type="text" value="{{room.value.roomOrder}}" formControlName="roomOrder"
-                     (change)="orderRooms(room, index)">
             </div>
             <div class="room-column">
               <input type="text" value="{{room.value.roomName}}" formControlName="roomName">

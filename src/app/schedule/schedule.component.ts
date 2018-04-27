@@ -11,8 +11,7 @@ export class ScheduleComponent implements OnInit {
   schedule: any;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService,
-              private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -25,10 +24,29 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  getCorrectSession(time: string, room: string): string {
-    let correctSession: any = this.schedule.sessions.find((session: any) => session.standardTime == time && session.room == room);
-    if (correctSession) return `${correctSession.title} - ${correctSession.speakerName}`;
+  isBreak(time: string) {
+    return this.schedule.sessions.find((session: any) => {
+      return session.standardTime == time && session.break == true;
+    });
+  }
+
+  getCorrectSession(time: string, room: string): any {
+    let correctSession: any = this.schedule.sessions.find((session: any) => {
+      return session.standardTime == time && session.room == room
+        || session.standardTime == time && session.break == true;
+    });
+    if (correctSession) {
+      if (!correctSession.break) return `${correctSession.title} - ${correctSession.speakerName}`;
+      if (correctSession.break) return correctSession.title;
+    }
     return "";
+  }
+
+  getBreakSession(time: string): string {
+    let correctSession: any = this.schedule.sessions.find((session: any) => {
+      return session.standardTime == time && session.break == true;
+    });
+    return correctSession.title;
   }
 
   goToSpeakerPage(time: string, room: string) {

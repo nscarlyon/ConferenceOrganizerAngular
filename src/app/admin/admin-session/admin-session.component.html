@@ -64,5 +64,9 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
   <button class="btn btn-success" type="submit" (click)="onSubmit()">Submit</button>
 </div>

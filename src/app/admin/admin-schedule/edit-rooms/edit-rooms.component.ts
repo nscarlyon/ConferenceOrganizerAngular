@@ -32,12 +32,6 @@ export class EditRoomsComponent implements OnInit {
     return this.roomsForm.get('rooms') as FormArray;
   }
 
-  orderRooms(): void {
-    this.rooms.controls.sort((roomOne: any, roomTwo: any) => {
-      return Number(roomOne.value.roomOrder) - Number(roomTwo.value.roomOrder);
-    });
-  }
-
   addRoom(): void {
     this.rooms.push(this.formBuilder.group({roomName: "New Room", roomOrder: Number(this.rooms.controls.length + 1)}));
   }
@@ -55,6 +49,8 @@ export class EditRoomsComponent implements OnInit {
       this.schedule = response;
     });
   }
+
+
 
   closeEditingRooms(): void {
     this.editingRooms.emit(false);

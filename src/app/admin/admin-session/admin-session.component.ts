@@ -19,6 +19,7 @@ export class AdminSessionComponent implements OnInit {
   endTime: string;
   addingTimeSlot: boolean;
   addingRoom: boolean;
+  errorMessage: string;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -77,13 +78,28 @@ export class AdminSessionComponent implements OnInit {
 
    addSession(): void {
     let postData: any = this.getPostData();
-    if(this.addingRoom) {
-      this.schedule.rooms.push(this.sessionForm.value.room);
-      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
+     this.addRoom();
+     this.addTimeSlot(postData);
+    let session: any = this.schedule.sessions.find((session: any) => {
+      return session.standardTime == postData.standardTime && session.room == postData.room
+        || session.standardTime == postData.standardTime && session.break == true;
+    });
+
+    if(!session) {
+      this.conferenceOrganizerService.addSession(postData).subscribe(() => {
+        this.proposal.scheduledTimes.push({room: postData.room, standardTime: postData.standardTime});
+        this.conferenceOrganizerService.updateProposal(this.proposal).subscribe();
+        this.router.navigate(["admin/schedule"]);
+      });
+    } else {
+      this.errorMessage = "This Session already exists";
     }
-    if(this.addingTimeSlot) {
+  }
+
+  private addTimeSlot(postData: any) {
+    if (this.addingTimeSlot) {
       let newTimeSlot: any = this.getNewTimeSlot();
-      if(this.isValidTimeSlot(newTimeSlot)) {
+      if (this.isValidTimeSlot(newTimeSlot)) {
         postData.standardTime = newTimeSlot.standardTime;
         this.schedule.timeSlots.push(newTimeSlot);
         this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
@@ -92,11 +108,13 @@ export class AdminSessionComponent implements OnInit {
     } else {
       postData.standardTime = this.sessionForm.value.timeSlot;
     }
-    this.conferenceOrganizerService.addSession(postData).subscribe(() => {
-      this.proposal.scheduledTimes.push({room: postData.room, standardTime: postData.standardTime});
-      this.conferenceOrganizerService.updateProposal(this.proposal).subscribe();
-      this.router.navigate(["admin/schedule"]);
-    });
+  }
+
+  private addRoom() {
+    if (this.addingRoom) {
+      this.schedule.rooms.push(this.sessionForm.value.room);
+      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
+    }
   }
 
   getNewTimeSlot(): any {

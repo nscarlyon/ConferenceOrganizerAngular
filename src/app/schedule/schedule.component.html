@@ -6,9 +6,18 @@
   <div *ngFor="let timeSlot of schedule.timeSlots" class="flex-column">
     <div class="flex-row">
       <div class="box">{{timeSlot.standardTime}}</div>
-      <div *ngFor="let room of schedule.rooms" class="box" (click)="goToSpeakerPage(timeSlot.standardTime, room)">
-        {{getCorrectSession(timeSlot.standardTime, room)}}
-      </div>
+      <ng-container *ngIf="!isBreak(timeSlot.standardTime)">
+        <div *ngFor="let room of schedule.rooms"
+             class="box"
+             (click)="goToSpeakerPage(timeSlot.standardTime, room)">
+          {{getCorrectSession(timeSlot.standardTime, room)}}
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isBreak(timeSlot.standardTime)">
+        <div class="break">
+          {{getBreakSession(timeSlot.standardTime)}}
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>
