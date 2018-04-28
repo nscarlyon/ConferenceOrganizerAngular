@@ -3,9 +3,9 @@
   <div>
     <button *ngIf="!schedule.published" class="btn admin-btn" (click)="publishSchedule()">Publish Schedule</button>
     <button *ngIf="schedule.published" class="btn admin-btn" (click)="unpublishSchedule()">Unpublish Schedule</button>
-    <button class="btn admin-btn" (click)="toggleEditingRooms()">Edit Rooms</button>
-    <button class="btn admin-btn" (click)="toggleEditingTimeSlots()">Edit Time Slots</button>
-    <button class="btn admin-btn" (click)="toggleAddingBreak()">Add Break</button>
+    <button class="btn admin-btn" (click)="toggleEditingRooms()">Add/Remove Rooms</button>
+    <button class="btn admin-btn" (click)="toggleEditingTimeSlots()">Add/Remove Time Slots</button>
+    <button class="btn admin-btn" (click)="toggleAddingBreak()">Add/Remove Breaks</button>
   </div>
   <div class="flex-row">
     <div class="box">*</div>
