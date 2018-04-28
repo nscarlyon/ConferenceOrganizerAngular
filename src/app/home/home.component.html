@@ -2,11 +2,13 @@
   {{cfpMessage}}
 </div>
 <div *ngIf="cfpStatus == 'open'">
-  <a routerLink="/speaker" routerLinkActive="active">Submit a proposal</a>
+  <a routerLink="/speaker" routerLinkActive="active">Submit a Proposal</a>
 </div>
-<div>
-  <a routerLink="/speakers" routerLinkActive="active">See Speakers</a>
-</div>
-<div>
-  <a routerLink="/schedule" routerLinkActive="active">See schedule</a>
+<div *ngIf="schedulePublished">
+  <div>
+    <a routerLink="/speakers" routerLinkActive="active">See Speakers</a>
+  </div>
+  <div>
+    <a routerLink="/schedule" routerLinkActive="active">See Schedule</a>
+  </div>
 </div>
