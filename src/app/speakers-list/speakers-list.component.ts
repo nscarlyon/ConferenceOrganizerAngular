@@ -45,7 +45,8 @@ export class SpeakersListComponent implements OnInit {
     this.sessions.forEach((session: any) => {
       if(this.speakerSessionGroups.get(session.speakerName)) {
         this.speakerSessionGroups.get(session.speakerName).sessions.push(session);
-      } else {
+      }
+      else if(session.break == false) {
         this.speakerSessionGroups.set(session.speakerName, {bio: session.bio, sessions: [session]});
       }
     });
