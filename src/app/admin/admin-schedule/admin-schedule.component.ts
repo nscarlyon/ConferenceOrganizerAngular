@@ -32,15 +32,14 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   isBreak(time: string) {
-    return this.schedule.sessions.find((session: any) => {
+    return this.schedule.sessions.some((session: any) => {
       return session.standardTime == time && session.break == true;
     });
   }
 
-  getCorrectSession(time: string, room: string): any {
+  getSessionTitle(time: string, room: string): any {
     let correctSession: any = this.schedule.sessions.find((session: any) => {
       return session.standardTime == time && session.room == room
-          || session.standardTime == time && session.break == true;
     });
     if (correctSession) {
       if (!correctSession.break) return `${correctSession.title} - ${correctSession.speakerName}`;
@@ -48,7 +47,7 @@ export class AdminScheduleComponent implements OnInit {
     return "";
   }
 
-  getBreakSession(time: string): string {
+  getBreakTitle(time: string): string {
     let correctSession: any = this.schedule.sessions.find((session: any) => {
       return session.standardTime == time && session.break == true;
     });

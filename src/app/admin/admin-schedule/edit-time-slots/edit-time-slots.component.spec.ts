@@ -28,10 +28,58 @@ describe('EditTimeSlotsComponent', () => {
         }
       ]
     };
+    component.setTimeSlotsForm();
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should delete one of current timeslots by index', () => {
+    component.deleteTimeSlot(0);
+    expect(component.timeSlots.length).toEqual(0);
+  });
+
+  it('should add timeSlot', () => {
+    expect(component.timeSlotsToAdd.length).toEqual(0);
+    component.addTimeSlot();
+    expect(component.timeSlotsToAdd.length).toEqual(1);
+  });
+
+  it('should delete added timeSlot by index', () => {
+    component.addTimeSlot();
+    component.deleteTimeSlotToAdd(0);
+    expect(component.timeSlotsToAdd.length).toEqual(0);
+  });
+
+  it('should save all timeSlots', () => {
+    component.addTimeSlot();
+    component.addTimeSlot();
+    component.saveTimeSlots();
+    expect(component.schedule.timeSlots.length).toEqual(3);
+  });
+
+  it('should convert military timeSlots to new timeSlots', () => {
+    component.addTimeSlot();
+    component.addTimeSlot();
+    component.timeSlotsToAdd.controls[0].patchValue({startTime: "9:00", endTime: "10:00"});
+    component.timeSlotsToAdd.controls[1].patchValue({startTime: "13:30", endTime: "14:46"});
+    component.saveTimeSlots();
+
+    expect(component.schedule.timeSlots[1]).toEqual({
+      startHour: 9,
+      startMin: 0,
+      endHour: 10,
+      endMin: 0,
+      standardTime: "9:00-10:00 A.M"
+    });
+    expect(component.schedule.timeSlots[2]).toEqual({
+      startHour: 13,
+      startMin: 30,
+      endHour: 14,
+      endMin: 46,
+      standardTime: "1:30-2:46 P.M"
+    });
   });
 });

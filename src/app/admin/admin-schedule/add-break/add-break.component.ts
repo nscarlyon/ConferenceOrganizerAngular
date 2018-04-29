@@ -19,10 +19,6 @@ export class AddBreakComponent implements OnInit {
     this.setBreakForm();
   }
 
-  closeAddingBreak(): void {
-    this.addingBreak.emit();
-  }
-
   setBreakForm() {
     this.breakForm = this.formBuilder.group({
       "break": [true],
@@ -36,5 +32,9 @@ export class AddBreakComponent implements OnInit {
       this.schedule.sessions.push(this.breakForm.value);
       this.closeAddingBreak();
     });
+  }
+
+  closeAddingBreak(): void {
+    this.addingBreak.emit();
   }
 }

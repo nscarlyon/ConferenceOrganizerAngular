@@ -20,17 +20,21 @@ export class EditTimeSlotsComponent implements OnInit {
   }
 
   setTimeSlotsForm(): void {
-    let scheduleTimeSlots: FormGroup[] = this.schedule.timeSlots.map((timeSlot: any) => {
-      return this.formBuilder.group({
-        timeSlot: timeSlot,
-        standardTime: [{value: timeSlot.standardTime, disabled: true}]
-      });
-    });
+    let scheduleTimeSlots: FormGroup[] = this.getScheduleTimeSlots();
 
     this.timeSlotsForm = this.formBuilder.group({
       timeSlots: this.formBuilder.array(scheduleTimeSlots),
       timeSlotsToAdd: this.formBuilder.array([])
     })
+  }
+
+  getScheduleTimeSlots() {
+    return this.schedule.timeSlots.map((timeSlot: any) => {
+      return this.formBuilder.group({
+        timeSlot: timeSlot,
+        standardTime: [{value: timeSlot.standardTime, disabled: true}]
+      });
+    });
   }
 
   deleteTimeSlot(timeSlotIndex: number): void {
@@ -57,9 +61,10 @@ export class EditTimeSlotsComponent implements OnInit {
   }
 
   saveTimeSlots(): void {
-    let newTimeSlots: any[] = this.getNewTimeSlot();
+    let newTimeSlots: any[] = this.getNewTimeSlots();
     let currentTimeSlots: any[] = this.timeSlots.controls.map(t => t.get('timeSlot').value);
     this.schedule.timeSlots = currentTimeSlots.concat(newTimeSlots);
+
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
       this.schedule = response;
       this.closeEditingTimeSlots();
@@ -67,7 +72,7 @@ export class EditTimeSlotsComponent implements OnInit {
     });
   }
 
-  getNewTimeSlot(): any[] {
+  getNewTimeSlots(): any[] {
     let newTimeSlots: any[] = this.timeSlotsToAdd.controls.map(t => {
       let timeSlot: any = {};
       let startTime: string = t.value.startTime;
@@ -79,7 +84,6 @@ export class EditTimeSlotsComponent implements OnInit {
       let standardStartTime = this.convertMilitaryToStandardTime(startTime);
       let standardEndTime = this.convertMilitaryToStandardTime(endTime);
       timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
-      console.log(timeSlot.endHour);
       timeSlot.endHour <= 11
         ? timeSlot.standardTime+= " A.M"
         : timeSlot.standardTime+=" P.M";

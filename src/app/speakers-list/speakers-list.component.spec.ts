@@ -58,7 +58,10 @@ describe('SpeakersListComponent', () => {
     bio: "",
     break: false
   };
-    spyOn(conferenceOrganizerService, "getSessions").and.returnValue(Observable.of([sessionFour, sessionTwo, sessionOne, sessionFive, sessionThree]));
+    let sessionSix: any = {
+    break: true
+  };
+    spyOn(conferenceOrganizerService, "getSessions").and.returnValue(Observable.of([sessionSix, sessionFour, sessionTwo, sessionOne, sessionFive, sessionThree]));
     component.setSessions();
     let expected: any = new Map();
     expected.set("speaker-2", {bio: "", sessions: [sessionFour, sessionTwo]});

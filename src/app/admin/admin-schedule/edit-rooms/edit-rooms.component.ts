@@ -23,6 +23,7 @@ export class EditRoomsComponent implements OnInit {
     let scheduleRooms: FormGroup[] = this.schedule.rooms.map((room: string) => {
       return this.formBuilder.group({roomName: {value: room, disabled: true}});
     });
+
     this.roomsForm = this.formBuilder.group({
       rooms: this.formBuilder.array(scheduleRooms),
       roomsToAdd: this.formBuilder.array([])

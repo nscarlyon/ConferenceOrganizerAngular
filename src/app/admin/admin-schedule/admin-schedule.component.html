@@ -18,12 +18,12 @@
         <div *ngFor="let room of schedule.rooms"
         class="box"
         (click)="goToEditSessionPage(timeSlot.standardTime, room)">
-        {{getCorrectSession(timeSlot.standardTime, room)}}
+        {{getSessionTitle(timeSlot.standardTime, room)}}
         </div>
       </ng-container>
       <ng-container *ngIf="isBreak(timeSlot.standardTime)">
         <div class="break">
-          {{getBreakSession(timeSlot.standardTime)}}
+          {{getBreakTitle(timeSlot.standardTime)}}
         </div>
       </ng-container>
     </div>

@@ -96,7 +96,7 @@ export class AdminSessionComponent implements OnInit {
     }
   }
 
-  private addTimeSlot(postData: any) {
+  addTimeSlot(postData: any) {
     if (this.addingTimeSlot) {
       let newTimeSlot: any = this.getNewTimeSlot();
       if (this.isValidTimeSlot(newTimeSlot)) {
@@ -110,7 +110,7 @@ export class AdminSessionComponent implements OnInit {
     }
   }
 
-  private addRoom() {
+  addRoom() {
     if (this.addingRoom) {
       this.schedule.rooms.push(this.sessionForm.value.room);
       this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
@@ -149,7 +149,7 @@ export class AdminSessionComponent implements OnInit {
     return newTimeSlot.startHour >= 0 || newTimeSlot.startMin >= 0 || newTimeSlot.endHour >= 0 || newTimeSlot.endMin >= 0;
   }
 
-  private getPostData(): any {
+  getPostData(): any {
     let postData: any = {};
     postData.speakerName =  this.proposal.speakerName;
     postData.email = this.proposal.email;

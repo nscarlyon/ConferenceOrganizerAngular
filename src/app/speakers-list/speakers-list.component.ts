@@ -36,11 +36,11 @@ export class SpeakersListComponent implements OnInit {
   setSessions(): void {
     this.conferenceOrganizerService.getSessions().subscribe((sessions: any) => {
       this.sessions = sessions;
-      this.orderSessions();
+      this.groupSessionsBySpeaker();
     });
   }
 
-  orderSessions(): void {
+  groupSessionsBySpeaker(): void {
     this.speakerSessionGroups = new Map();
     this.sessions.forEach((session: any) => {
       if(this.speakerSessionGroups.get(session.speakerName)) {

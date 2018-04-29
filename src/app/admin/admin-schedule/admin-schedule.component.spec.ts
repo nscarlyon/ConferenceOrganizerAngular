@@ -34,17 +34,26 @@ describe('AdminScheduleComponent', () => {
       speakerName: "speaker-1",
       standardTime: "9:00-10:00",
       room: "Room A",
+      break: false
     };
     let sessionTwo: any = {
       title: "title-2",
       speakerName: "speaker-2",
       standardTime: "10:00-11:00",
       room: "Room B",
+      break: false
+    };
+    let sessionThree: any = {
+      title: "Morning Nap",
+      speakerName: null,
+      standardTime: "9:30-10:00",
+      room: null,
+      break: true
     };
     schedule = {
       rooms: ["Room A", "Room B"],
       timeSlots: [{standardTime: "9:00-10:00"}, {standardTime: "10:00-11:00"}],
-      sessions: [sessionOne, sessionTwo]
+      sessions: [sessionOne, sessionTwo, sessionThree]
     };
     component.schedule = schedule;
     fixture.detectChanges();
@@ -53,42 +62,33 @@ describe('AdminScheduleComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  // it('should set schedule', () => {
-  //   spyOn(conferenceOrganizerService, "getSchedule").and.returnValue(Observable.of(schedule));
-  //   component.setSchedule();
-  //   expect(component.schedule).toEqual(schedule);
-  //   expect(conferenceOrganizerService.getSchedule as Spy).toHaveBeenCalled();
-  // });
-  //
-  // it('should return the correct session', () => {
-  //   let correctSession: any = component.getCorrectSession("10:00-11:00", "Room B");
-  //   expect(correctSession).toEqual("title-2 - speaker-2")
-  // });
-  //
-  // it('should delete room', () => {
-  //   spyOn(conferenceOrganizerService, "putSchedule").and.returnValue(Observable.of());
-  //   component.setRoomsForm();
-  //   component.deleteRoom(0);
-  //   component.saveRooms();
-  //   expect(component.schedule.rooms).toEqual(["Room B"]);
-  //   expect(conferenceOrganizerService.putSchedule as Spy).toHaveBeenCalledWith(component.schedule);
-  // });
-  //
-  // it('should add room', () => {
-  //   component.setRoomsForm();
-  //   component.addRoom();
-  //   component.saveRooms();
-  //   expect(component.schedule.rooms.length).toEqual(3);
-  // });
-  //
-  // it('should order rooms', () => {
-  //   component.setRoomsForm();
-  //   component.rooms.push(FormBuilder.prototype.group({roomName: "Room C", roomOrder: 3}));
-  //   component.rooms.controls[0].value.roomOrder = 3;
-  //   component.rooms.controls[2].value.roomOrder = 1;
-  //   component.orderRooms();
-  //   component.saveRooms();
-  //   expect(component.schedule.rooms[0]).toEqual("Room C");
-  //   expect(component.schedule.rooms[2]).toEqual("Room A");
-  // })
+
+  it('should set schedule', () => {
+    spyOn(conferenceOrganizerService, "getSchedule").and.returnValue(Observable.of(schedule));
+    component.setSchedule();
+    expect(component.schedule).toEqual(schedule);
+    expect(conferenceOrganizerService.getSchedule as Spy).toHaveBeenCalled();
+  });
+
+  it('should return the session title', () => {
+    let session: any = component.getSessionTitle("10:00-11:00", "Room B");
+    expect(session).toEqual("title-2 - speaker-2")
+  });
+
+  it('should return break title', () => {
+    let breakSession: any = component.getBreakTitle("9:30-10:00");
+    expect(breakSession).toEqual("Morning Nap")
+  });
+
+  it('should return empty string if there is no session', () => {
+    let breakSession: any = component.getSessionTitle("12:00-1:00");
+    expect(breakSession).toEqual("")
+  });
+
+  it('should determine if session is a break', () => {
+    let isBreakSession: any = component.isBreak("9:30-10:00");
+    let isNotBreakSession: any = component.isBreak("10:00-11:00");
+    expect(isBreakSession).toEqual(true);
+    expect(isNotBreakSession).toEqual(false);
+  });
 });
