@@ -8,12 +8,12 @@
     <button class="btn admin-btn" (click)="toggleAddingBreak()">Add/Remove Breaks</button>
   </div>
   <div class="flex-row">
-    <div class="box">*</div>
-    <div *ngFor="let room of schedule.rooms" class="box">{{room}}</div>
+    <div class="header-box">*</div>
+    <div *ngFor="let room of schedule.rooms" class="header-box">{{room}}</div>
   </div>
   <div *ngFor="let timeSlot of schedule.timeSlots" class="flex-column">
     <div class="flex-row">
-      <div class="box">{{timeSlot.standardTime}}</div>
+      <div class="header-box">{{timeSlot.standardTime}}</div>
       <ng-container *ngIf="!isBreak(timeSlot.standardTime)">
         <div *ngFor="let room of schedule.rooms"
         class="box"

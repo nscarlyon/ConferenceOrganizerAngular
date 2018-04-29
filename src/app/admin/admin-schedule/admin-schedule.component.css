@@ -1,6 +1,16 @@
 .box {
-  color: #fff;
+  background-color: #ccc;
+  color: #000;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+  margin: 5px;
+  width: 200px;
+}
+
+.header-box {
   background-color: #444;
+  color: #fff;
   border-radius: 5px;
   padding: 20px;
   font-size: 150%;
@@ -17,11 +27,6 @@
   padding: 20px;
   flex: 1;
   text-align: center;
-}
-
-.box:nth-child(even) {
-  background-color: #ccc;
-  color: #000;
 }
 
 .wrapper {
