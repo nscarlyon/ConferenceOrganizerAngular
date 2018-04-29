@@ -20,11 +20,12 @@ export class EditRoomsComponent implements OnInit {
   }
 
   setRoomsForm(): void {
-    let scheduleRooms: FormGroup[] = this.schedule.rooms.map((room: string, index: number) => {
-      return this.formBuilder.group({roomName: room, roomOrder: index + 1});
+    let scheduleRooms: FormGroup[] = this.schedule.rooms.map((room: string) => {
+      return this.formBuilder.group({roomName: {value: room, disabled: true}});
     });
     this.roomsForm = this.formBuilder.group({
-      rooms: this.formBuilder.array(scheduleRooms)
+      rooms: this.formBuilder.array(scheduleRooms),
+      roomsToAdd: this.formBuilder.array([])
     });
   }
 
@@ -32,25 +33,32 @@ export class EditRoomsComponent implements OnInit {
     return this.roomsForm.get('rooms') as FormArray;
   }
 
+  get roomsToAdd(): FormArray {
+    return this.roomsForm.get('roomsToAdd') as FormArray;
+  }
+
   addRoom(): void {
-    this.rooms.push(this.formBuilder.group({roomName: "New Room", roomOrder: Number(this.rooms.controls.length + 1)}));
+    this.roomsToAdd.push(this.formBuilder.group({roomToAdd: ""}));
   }
 
   deleteRoom(roomIndex: number): void {
     this.rooms.removeAt(roomIndex);
   }
 
+  deleteRoomToAdd(roomIndex: number): void {
+    this.roomsToAdd.removeAt(roomIndex);
+  }
+
   saveRooms(): void {
-    this.schedule.rooms = this.rooms.controls.map((room: any) => {
-      return room.value.roomName;
-    });
+    let currentRooms: any = this.rooms.controls.map(room => room.value.roomName);
+    let newRooms: any = this.roomsToAdd.controls.map(room => room.value.roomToAdd);
+    this.schedule.rooms = currentRooms.concat(newRooms);
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
       this.closeEditingRooms();
+      this.setRoomsForm();
       this.schedule = response;
     });
   }
-
-
 
   closeEditingRooms(): void {
     this.editingRooms.emit(false);

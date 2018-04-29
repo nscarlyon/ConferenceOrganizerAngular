@@ -18,7 +18,17 @@
               <button class="btn-danger" (click)="deleteRoom(i)">X</button>
             </div>
             <div class="room-column">
-              <input type="text" value="{{room.value.roomName}}" formControlName="roomName">
+              <input type="text" value="{{room.get('roomName').value}}" formControlName="roomName">
+            </div>
+          </div>
+        </div>
+        <div formArrayName="roomsToAdd">
+          <div class="rooms-container-row" *ngFor="let roomToAdd of roomsToAdd.controls; let i=index" [formGroupName]="i">
+            <div class="delete-column">
+              <button class="btn-danger" (click)="deleteRoomToAdd(i)">X</button>
+            </div>
+            <div class="room-column">
+              <input type="text" formControlName="roomToAdd">
             </div>
           </div>
         </div>
