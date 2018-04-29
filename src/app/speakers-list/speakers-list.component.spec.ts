@@ -35,23 +35,28 @@ describe('SpeakersListComponent', () => {
   it('should group sessions by speaker', () => {
     let sessionOne: any = {
       speakerName: "speaker-1",
-      bio: ""
+      bio: "",
+      break: false
     };
     let sessionTwo: any = {
       speakerName: "speaker-2",
-      bio: ""
+      bio: "",
+      break: false
     };
     let sessionThree: any = {
     speakerName: "speaker-1",
-    bio: ""
+    bio: "",
+    break: false
   };
     let sessionFour: any = {
     speakerName: "speaker-2",
-    bio: ""
+    bio: "",
+    break: false
   };
     let sessionFive: any = {
     speakerName: "speaker-3",
-    bio: ""
+    bio: "",
+    break: false
   };
     spyOn(conferenceOrganizerService, "getSessions").and.returnValue(Observable.of([sessionFour, sessionTwo, sessionOne, sessionFive, sessionThree]));
     component.setSessions();

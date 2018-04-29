@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddBreakComponent } from './add-break.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {ConferenceOrganizerService} from "../../../services/conference-organizer.service";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('AddBreakComponent', () => {
   let component: AddBreakComponent;
@@ -8,7 +11,9 @@ describe('AddBreakComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddBreakComponent ]
+      declarations: [ AddBreakComponent ],
+      providers: [ConferenceOrganizerService],
+      imports: [ReactiveFormsModule, HttpClientTestingModule]
     })
     .compileComponents();
   }));
