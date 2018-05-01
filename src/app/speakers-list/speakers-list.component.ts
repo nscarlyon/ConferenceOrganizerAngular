@@ -12,6 +12,7 @@ export class SpeakersListComponent implements OnInit {
   sessions: any[];
   speakerSessionGroups: any;
   fragment: string;
+  scheduleStatus: boolean;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService,
               private activatedRoute: ActivatedRoute) {
@@ -19,7 +20,7 @@ export class SpeakersListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setSessions();
+    this.setScheduleStatus();
     this.activatedRoute.fragment.subscribe(fragment => {
       this.fragment = fragment;
     })
@@ -31,6 +32,13 @@ export class SpeakersListComponent implements OnInit {
         document.querySelector('#' + this.fragment).scrollIntoView();
       }
     } catch (e) { }
+  }
+
+  setScheduleStatus(): void {
+    this.conferenceOrganizerService.getSchedule().subscribe((response) => {
+      this.scheduleStatus = response.published;
+      if (this.scheduleStatus) this.setSessions();
+    });
   }
 
   setSessions(): void {

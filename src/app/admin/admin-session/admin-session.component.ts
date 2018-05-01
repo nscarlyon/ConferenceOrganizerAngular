@@ -33,11 +33,11 @@ export class AdminSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setSessionId();
+    this.setProposalId();
     this.setRoomsAndTimeSlots();
   }
 
-  setSessionId(): void {
+  setProposalId(): void {
     this.activatedRoute.params.subscribe((params: any) => {
       this.proposalId = params['id'];
       this.setProposal();
@@ -122,13 +122,13 @@ export class AdminSessionComponent implements OnInit {
     let timeSlot: any = {};
     let startTime: string = this.sessionForm.value.startTime;
     let endTime: string = this.sessionForm.value.endTime;
+    let standardStartTime = this.convertMilitaryToStandardTime(startTime);
+    let standardEndTime = this.convertMilitaryToStandardTime(endTime);
+    timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
     timeSlot.startHour = Number(startTime.split(":")[0]);
     timeSlot.startMin = Number(startTime.split(":")[1]);
     timeSlot.endHour = Number(endTime.split(":")[0]);
     timeSlot.endMin = Number(endTime.split(":")[1]);
-    let standardStartTime = this.convertMilitaryToStandardTime(startTime);
-    let standardEndTime = this.convertMilitaryToStandardTime(endTime);
-    timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
     timeSlot.endHour <= 11
       ? timeSlot.standardTime+= " A.M"
       : timeSlot.standardTime+=" P.M";

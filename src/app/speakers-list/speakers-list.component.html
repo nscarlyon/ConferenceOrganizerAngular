@@ -1,29 +1,35 @@
-<div *ngFor="let speakerSessionGroup of speakerSessionGroups" id="{{speakerSessionGroup[0].split(' ').join('', '-')}}" class="card text-white bg-dark speaker-container">
-  <div class="card-header text-center">
-    <h5 class="card-title">{{speakerSessionGroup[0]}}</h5>
-  </div>
-  <div>
-    <div class="card-body">
-      <div>
-        Bio: {{speakerSessionGroup[1].bio}}
-      </div>
+<div *ngIf="!scheduleStatus">
+  Please wait until schedule is published.
+</div>
+
+<div *ngIf="scheduleStatus">
+  <div *ngFor="let speakerSessionGroup of speakerSessionGroups" id="{{speakerSessionGroup[0].split(' ').join('', '-')}}" class="card text-white bg-dark speaker-container">
+    <div class="card-header text-center">
+      <h5 class="card-title">{{speakerSessionGroup[0]}}</h5>
     </div>
-  </div>
-  <div class="card-footer">
-    <h5 class="card-title text-center">Sessions</h5>
-    <div *ngFor="let speakerSession of speakerSessionGroup[1].sessions">
+    <div>
       <div class="card-body">
         <div>
-          Title: {{speakerSession.title}}
+          Bio: {{speakerSessionGroup[1].bio}}
         </div>
-        <div>
-          Time: {{speakerSession.standardTime}}
-        </div>
-        <div>
-          Room: {{speakerSession.room}}
-        </div>
-        <div>
-          Description: {{speakerSession.description}}
+      </div>
+    </div>
+    <div class="card-footer">
+      <h5 class="card-title text-center">Sessions</h5>
+      <div *ngFor="let speakerSession of speakerSessionGroup[1].sessions">
+        <div class="card-body">
+          <div>
+            Title: {{speakerSession.title}}
+          </div>
+          <div>
+            Time: {{speakerSession.standardTime}}
+          </div>
+          <div>
+            Room: {{speakerSession.room}}
+          </div>
+          <div>
+            Description: {{speakerSession.description}}
+          </div>
         </div>
       </div>
     </div>

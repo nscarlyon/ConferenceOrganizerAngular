@@ -30,6 +30,12 @@ describe('AdminSessionComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  //military time conversions
+  //standard time conversion
+  //new timeSlot format
+  //postData format
+
   //
   // it('should remove initial 0 in hours less than 10', () => {
   //   expect(component.convertMilitaryToStandardTime("09:00")).toEqual("9:00");
