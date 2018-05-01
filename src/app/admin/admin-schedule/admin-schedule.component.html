@@ -3,9 +3,10 @@
   <div>
     <button *ngIf="!schedule.published" class="btn admin-btn" (click)="publishSchedule()">Publish Schedule</button>
     <button *ngIf="schedule.published" class="btn admin-btn" (click)="unpublishSchedule()">Unpublish Schedule</button>
+    <button class="btn btn-danger" (click)="clearSchedule()">Clear Schedule</button>
     <button class="btn admin-btn" (click)="toggleEditingRooms()">Add/Remove Rooms</button>
     <button class="btn admin-btn" (click)="toggleEditingTimeSlots()">Add/Remove Time Slots</button>
-    <button class="btn admin-btn" (click)="toggleAddingBreak()">Add/Remove Breaks</button>
+    <button class="btn admin-btn" (click)="toggleAddingBreak()">Add Breaks</button>
   </div>
   <div class="flex-row">
     <div class="header-box">*</div>
@@ -22,7 +23,7 @@
         </div>
       </ng-container>
       <ng-container *ngIf="isBreak(timeSlot.standardTime)">
-        <div class="break">
+        <div class="break" (click)="goToEditSessionPage(timeSlot.standardTime)">
           {{getBreakTitle(timeSlot.standardTime)}}
         </div>
       </ng-container>
@@ -30,7 +31,7 @@
   </div>
 </div>
 <div *ngIf="!schedule">
-  Start adding sessions!
+  Start scheduling sessions!
 </div>
 
 <div *ngIf="editingRooms"

@@ -145,4 +145,13 @@ export class ConferenceOrganizerService implements OnInit {
         return response;
       });
   }
+
+  deleteSchedule(schedule: any): Observable<any> {
+    return this._http
+      .delete(`${this._url}/schedule`, this._options).pipe(catchError((error) => {
+        return "error";
+      })).map((response) => {
+        return response;
+      });
+  }
 }

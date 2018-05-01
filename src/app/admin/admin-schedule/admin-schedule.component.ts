@@ -54,8 +54,11 @@ export class AdminScheduleComponent implements OnInit {
     return correctSession.title;
   }
 
-  goToEditSessionPage(time: string, room: string): void {
-    let session: any = this.schedule.sessions.find((session: any) => session.standardTime == time && session.room == room);
+  goToEditSessionPage(time: string, room?: string): void {
+    let session: any = this.schedule.sessions.find((session: any) => {
+      if(room) return session.standardTime == time && session.room == room;
+      return session.standardTime == time;
+    });
     this.router.navigate([`../edit-session/${session.id}`], {relativeTo: this.activatedRoute})
   }
 
@@ -67,6 +70,12 @@ export class AdminScheduleComponent implements OnInit {
   unpublishSchedule(): void {
     this.schedule.published = !this.schedule.published;
     this.conferenceOrganizerService.unpublishSchedule(this.schedule).subscribe();
+  }
+
+  clearSchedule(): void {
+    this.conferenceOrganizerService.deleteSchedule(this.schedule).subscribe(() => {
+      this.schedule = null;
+    });
   }
 
   toggleEditingRooms(): void {

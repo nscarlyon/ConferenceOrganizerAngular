@@ -42,11 +42,6 @@ export class EditSessionComponent implements OnInit {
   }
 
   deleteSession(): void {
-    this.conferenceOrganizerService.getProposalById(this.session.proposalId).subscribe((response) => {
-      let proposal: any = response;
-      proposal.scheduledTimes = proposal.scheduledTimes.filter(x => x.room !== this.session.room && x.standardTime !== this.session.standardTime);
-      this.conferenceOrganizerService.updateProposal(proposal).subscribe();
-    });
     this.conferenceOrganizerService.deleteSession(this.sessionId).subscribe(() => {
       this.router.navigate(["admin/schedule"]);
     });

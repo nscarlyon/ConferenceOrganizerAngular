@@ -20,6 +20,7 @@ export class AdminSessionComponent implements OnInit {
   addingTimeSlot: boolean;
   addingRoom: boolean;
   errorMessage: string;
+  postData: any;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
@@ -28,6 +29,7 @@ export class AdminSessionComponent implements OnInit {
               ) {
     this.addingTimeSlot = false;
     this.addingRoom = false;
+    this.postData = {};
   }
 
   ngOnInit(): void {
@@ -77,12 +79,12 @@ export class AdminSessionComponent implements OnInit {
   }
 
    addSession(): void {
+     this.setPostData();
      this.addRoom();
      this.addTimeSlot();
-     let postData: any = this.getPostData();
 
-    if(!this.sessionExists(postData)) {
-      this.conferenceOrganizerService.addSession(postData).subscribe(() => {
+    if(!this.sessionExists()) {
+      this.conferenceOrganizerService.addSession(this.postData).subscribe(() => {
         this.router.navigate(["admin/schedule"]);
       });
     } else {
@@ -90,10 +92,12 @@ export class AdminSessionComponent implements OnInit {
     }
   }
 
-  sessionExists(postData: any): boolean {
+  sessionExists(): boolean {
     return this.schedule.sessions.some((session: any) => {
-      return session.standardTime == postData.standardTime && session.room == postData.room
-        || session.standardTime == postData.standardTime && session.break == true;
+      return session.standardTime == this.postData.standardTime
+          && session.room == this.postData.room
+          || session.standardTime == this.postData.standardTime
+          && session.break == true;
     });
   }
 
@@ -101,6 +105,7 @@ export class AdminSessionComponent implements OnInit {
     if (this.addingTimeSlot) {
       let newTimeSlot: any = this.getNewTimeSlot();
       this.schedule.timeSlots.push(newTimeSlot);
+      this.postData.standardTime = newTimeSlot.standardTime;
       this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
       });
     }
@@ -148,17 +153,15 @@ export class AdminSessionComponent implements OnInit {
         || newTimeSlot.endMin >= 0;
   }
 
-  getPostData(): any {
-    let postData: any = {};
-    postData.speakerName =  this.proposal.speakerName;
-    postData.email = this.proposal.email;
-    postData.proposalId = this.proposal.id;
-    postData.bio = this.proposal.bio;
-    postData.title = this.proposal.title;
-    postData.description = this.proposal.description;
-    postData.room = this.sessionForm.value.room;
-    postData.standardTime = this.sessionForm.value.timeSlot;
-    return postData;
+  setPostData(): void {
+    this.postData.speakerName =  this.proposal.speakerName;
+    this.postData.email = this.proposal.email;
+    this.postData.proposalId = this.proposal.id;
+    this.postData.bio = this.proposal.bio;
+    this.postData.title = this.proposal.title;
+    this.postData.description = this.proposal.description;
+    this.postData.room = this.sessionForm.value.room;
+    this.postData.standardTime = this.sessionForm.value.timeSlot;
   }
 
   toggleAddingTimeSlot(): void {

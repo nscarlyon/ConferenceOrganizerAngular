@@ -1,7 +1,19 @@
 <h2>Session</h2>
-
 <button class="btn btn-danger" (click)="deleteSession()">Delete Session</button>
-<div *ngIf="session" class="card text-white bg-dark session-container">
+
+<div *ngIf="session && session.break" class="card text-white bg-dark session-container">
+  <div class="card-body">
+    <h5 class="card-title text-center">Break Details</h5>
+    <div>
+      Title: {{session.title}}
+    </div>
+    <div>
+      Time: {{session.standardTime}}
+    </div>
+  </div>
+</div>
+
+<div *ngIf="session && session.break == false" class="card text-white bg-dark session-container">
     <div class="card-body">
       <h5 class="card-title text-center">Speaker Details</h5>
       <div>
