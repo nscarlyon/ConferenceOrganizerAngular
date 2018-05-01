@@ -136,4 +136,13 @@ export class ConferenceOrganizerService implements OnInit {
         return response;
       });
   }
+
+  deleteProposal(proposalId: number): Observable<any> {
+    return this._http
+      .delete(`${this._url}/proposals/${proposalId}`, this._options).pipe(catchError((error) => {
+        return "error";
+      })).map((response) => {
+        return response;
+      });
+  }
 }

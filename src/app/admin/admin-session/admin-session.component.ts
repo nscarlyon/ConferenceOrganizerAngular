@@ -77,18 +77,12 @@ export class AdminSessionComponent implements OnInit {
   }
 
    addSession(): void {
-    let postData: any = this.getPostData();
      this.addRoom();
-     this.addTimeSlot(postData);
-    let session: any = this.schedule.sessions.find((session: any) => {
-      return session.standardTime == postData.standardTime && session.room == postData.room
-        || session.standardTime == postData.standardTime && session.break == true;
-    });
+     this.addTimeSlot();
+     let postData: any = this.getPostData();
 
-    if(!session) {
+    if(!this.sessionExists(postData)) {
       this.conferenceOrganizerService.addSession(postData).subscribe(() => {
-        this.proposal.scheduledTimes.push({room: postData.room, standardTime: postData.standardTime});
-        this.conferenceOrganizerService.updateProposal(this.proposal).subscribe();
         this.router.navigate(["admin/schedule"]);
       });
     } else {
@@ -96,17 +90,19 @@ export class AdminSessionComponent implements OnInit {
     }
   }
 
-  addTimeSlot(postData: any) {
+  sessionExists(postData: any): boolean {
+    return this.schedule.sessions.some((session: any) => {
+      return session.standardTime == postData.standardTime && session.room == postData.room
+        || session.standardTime == postData.standardTime && session.break == true;
+    });
+  }
+
+  addTimeSlot() {
     if (this.addingTimeSlot) {
       let newTimeSlot: any = this.getNewTimeSlot();
-      if (this.isValidTimeSlot(newTimeSlot)) {
-        postData.standardTime = newTimeSlot.standardTime;
-        this.schedule.timeSlots.push(newTimeSlot);
-        this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
-        });
-      }
-    } else {
-      postData.standardTime = this.sessionForm.value.timeSlot;
+      this.schedule.timeSlots.push(newTimeSlot);
+      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
+      });
     }
   }
 
@@ -146,7 +142,10 @@ export class AdminSessionComponent implements OnInit {
   }
 
   isValidTimeSlot(newTimeSlot: any): boolean {
-    return newTimeSlot.startHour >= 0 || newTimeSlot.startMin >= 0 || newTimeSlot.endHour >= 0 || newTimeSlot.endMin >= 0;
+    return newTimeSlot.startHour >= 0
+        || newTimeSlot.startMin >= 0
+        || newTimeSlot.endHour >= 0
+        || newTimeSlot.endMin >= 0;
   }
 
   getPostData(): any {

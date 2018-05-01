@@ -42,7 +42,7 @@ export class AdminScheduleComponent implements OnInit {
       return session.standardTime == time && session.room == room
     });
     if (correctSession) {
-      if (!correctSession.break) return `${correctSession.title} - ${correctSession.speakerName}`;
+       return `${correctSession.title} - ${correctSession.speakerName}`;
     }
     return "";
   }

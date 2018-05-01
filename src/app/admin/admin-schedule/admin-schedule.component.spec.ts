@@ -81,7 +81,7 @@ describe('AdminScheduleComponent', () => {
   });
 
   it('should return empty string if there is no session', () => {
-    let breakSession: any = component.getSessionTitle("12:00-1:00");
+    let breakSession: any = component.getSessionTitle("12:00-1:00", "Room A");
     expect(breakSession).toEqual("")
   });
 

@@ -20,11 +20,7 @@ export function timeSlotSelected(): ValidatorFn {
 
 export function validStartTime(): ValidatorFn {
   return (control: AbstractControl) => {
-    let startTime: any = control.value;
-    let endTime: any = control.parent.value.endTime;
-    let timeSlot: any = getNewTimeSlot(startTime, endTime);
-
-    return Observable.of(isTimeSlotMissing(timeSlot)).pipe(
+    return Observable.of(isTimeSlotMissing(control)).pipe(
       map(result => {
         return result ? {'timeSlotMissing': {value: "Time Slot is missing!"}} : null
       })
@@ -40,28 +36,12 @@ export function validEndTime(): ValidatorFn {
   }
 }
 
-function getNewTimeSlot(startTime: string, endTime: string): any {
-  let newTimeSlot: any = {};
-  newTimeSlot.standardTime = `${convertMilitaryToStandardTime(startTime)}-${convertMilitaryToStandardTime(endTime)}`;
-  newTimeSlot.startHour = Number(startTime.split(":")[0]);
-  newTimeSlot.startMin = Number(startTime.split(":")[1]);
-  newTimeSlot.endHour = Number(endTime.split(":")[0]);
-  newTimeSlot.endMin = Number(endTime.split(":")[1]);
-  return newTimeSlot;
-}
-
-function convertMilitaryToStandardTime(time: string): string {
-  let splitTime: string[] = time.split(":");
-  let hour: number = Number(splitTime[0]);
-  let min: string = splitTime[1];
-  if(hour > 12) {
-    let hourConversions: any = {13: 1, 14: 2, 15: 3, 16: 4, 17: 5, 18: 6, 19: 7, 20: 8, 21: 9, 22: 10, 23: 11, 24: 12};
-    hour = hourConversions[hour];
-  }
-  return `${hour}:${min}`;
-}
-
-function isTimeSlotMissing(newTimeSlot: any): boolean {
-  return newTimeSlot.startHour < 0 || newTimeSlot.startMin < 0 || newTimeSlot.endHour < 0 || newTimeSlot.endMin < 0;
+function isTimeSlotMissing(control: any): boolean {
+  let startTime: any = control.value;
+  let endTime: any = control.parent.value.endTime;
+  return startTime.startHour < 0
+      || startTime.startMin < 0
+      || endTime.endHour < 0
+      || endTime.endMin < 0;
 }
 

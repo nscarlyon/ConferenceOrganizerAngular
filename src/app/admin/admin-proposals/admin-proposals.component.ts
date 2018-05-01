@@ -7,6 +7,7 @@ import {ConferenceOrganizerService} from "../../services/conference-organizer.se
   templateUrl: 'admin-proposals.component.html',
   styleUrls: ['admin-proposals.component.css']
 })
+
 export class AdminProposalsComponent implements OnInit {
   proposals: any;
 
@@ -26,5 +27,11 @@ export class AdminProposalsComponent implements OnInit {
 
   goToSessionPage(id: number): void {
     this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
+  }
+
+  deleteProposal(proposalId: number): void {
+    this.conferenceOrganizerService.deleteProposal(proposalId).subscribe((response: any) => {
+      this.proposals = response;
+    });
   }
 }

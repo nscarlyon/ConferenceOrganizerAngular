@@ -1,3 +1,6 @@
+<div *ngIf="proposals && proposals.length == 0">
+  There are no proposals.
+</div>
 <div class="card-columns">
     <div *ngFor="let proposal of proposals" class="card text-white bg-dark">
       <div class="card-header text-center">
@@ -24,7 +27,7 @@
       </div>
       <div class="card-footer text-center">
         <button class="btn btn-success" (click)="goToSessionPage(proposal.id)">Add to Schedule</button>
-        <button class="btn btn-danger">Delete Proposal</button>
+        <button class="btn btn-danger" (click)="deleteProposal(proposal.id)">Delete Proposal</button>
       </div>
     </div>
 </div>
