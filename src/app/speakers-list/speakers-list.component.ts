@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../services/conference-organizer.service";
 import {ActivatedRoute} from "@angular/router";
+import {Session} from "../shared/session";
 
 @Component({
   selector: 'app-speakers-list',
@@ -9,7 +10,7 @@ import {ActivatedRoute} from "@angular/router";
 })
 
 export class SpeakersListComponent implements OnInit {
-  sessions: any[];
+  sessions: Session[];
   speakerSessionGroups: any;
   fragment: string;
   scheduleStatus: boolean;
@@ -42,7 +43,7 @@ export class SpeakersListComponent implements OnInit {
   }
 
   setSessions(): void {
-    this.conferenceOrganizerService.getSessions().subscribe((sessions: any) => {
+    this.conferenceOrganizerService.getSessions().subscribe((sessions: Session[]) => {
       this.sessions = sessions;
       this.groupSessionsBySpeaker();
     });
@@ -50,14 +51,22 @@ export class SpeakersListComponent implements OnInit {
 
   groupSessionsBySpeaker(): void {
     this.speakerSessionGroups = new Map();
-    this.sessions.forEach((session: any) => {
-      if(this.speakerSessionGroups.get(session.speakerName)) {
+    this.sessions.forEach((session: Session) => {
+      if(this.speakerGrouped(session)) {
         this.speakerSessionGroups.get(session.speakerName).sessions.push(session);
       }
-      else if(session.break == false) {
+      else if(this.speakerNotGrouped(session)) {
         this.speakerSessionGroups.set(session.speakerName, {bio: session.bio, sessions: [session]});
       }
     });
     this.speakerSessionGroups = Array.from(this.speakerSessionGroups);
+  }
+
+  speakerGrouped(session: any): any {
+    return this.speakerSessionGroups.get(session.speakerName);
+  }
+
+  speakerNotGrouped(session: any): boolean {
+    return session.break == false;
   }
 }

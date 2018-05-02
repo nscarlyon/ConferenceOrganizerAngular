@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup, FormBuilder, Validators} from "@angular/forms";
 import {ConferenceOrganizerService} from "../services/conference-organizer.service";
+import {CFP} from "../shared/CFP";
 
 @Component({
   selector: 'app-speaker',
@@ -11,7 +12,7 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
 export class SpeakerComponent implements OnInit {
   proposalForm: FormGroup;
   message: string = "";
-  cfpStatus: any;
+  cfpStatus: string;
 
   constructor(private formBuilder: FormBuilder,
               private conferenceOrganizerService: ConferenceOrganizerService) {
@@ -33,7 +34,7 @@ export class SpeakerComponent implements OnInit {
   }
 
   setCfpStatus() {
-    this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
+    this.conferenceOrganizerService.getCfpStatus().subscribe((response: CFP) => {
       this.cfpStatus = response.status;
     });
   }

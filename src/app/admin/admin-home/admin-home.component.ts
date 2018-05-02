@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
+import {CFP} from "../../shared/CFP";
 
 @Component({
   selector: 'app-admin-home',
   templateUrl: './admin-home.component.html',
   styleUrls: ['./admin-home.component.css']
 })
+
 export class AdminHomeComponent implements OnInit {
-  cfp: any;
+  cfp: CFP;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService) { }
 
@@ -16,8 +18,8 @@ export class AdminHomeComponent implements OnInit {
   }
 
   setCfpStatus(): void {
-    this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
-      this.cfp = response;
+    this.conferenceOrganizerService.getCfpStatus().subscribe((cfp: CFP) => {
+      this.cfp = cfp;
     });
   }
 

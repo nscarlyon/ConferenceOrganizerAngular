@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {Session} from "../../shared/session";
 
 @Component({
   selector: 'app-edit-session',
@@ -8,20 +9,13 @@ import {ActivatedRoute, Router} from "@angular/router";
   styleUrls: ['./edit-session.component.css']
 })
 export class EditSessionComponent implements OnInit {
-  schedule: any;
   session: any;
   sessionId: string;
-  startTime: string;
-  endTime: string;
-  addingTimeSlot: boolean;
-  addingRoom: boolean;
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
               private conferenceOrganizerService: ConferenceOrganizerService
   ) {
-    this.addingTimeSlot = false;
-    this.addingRoom = false;
   }
 
   ngOnInit(): void {
@@ -36,7 +30,7 @@ export class EditSessionComponent implements OnInit {
   }
 
   setSession(): void {
-    this.conferenceOrganizerService.getSessionById(this.sessionId).subscribe((session: any) => {
+    this.conferenceOrganizerService.getSession(this.sessionId).subscribe((session: Session) => {
       this.session = session;
     });
   }

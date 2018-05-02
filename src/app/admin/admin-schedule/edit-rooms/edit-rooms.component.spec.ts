@@ -4,6 +4,7 @@ import { EditRoomsComponent } from './edit-rooms.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {ConferenceOrganizerService} from "../../../services/conference-organizer.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {Schedule} from "../../../shared/schedule";
 
 describe('EditRoomsComponent', () => {
   let component: EditRoomsComponent;
@@ -21,9 +22,8 @@ describe('EditRoomsComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EditRoomsComponent);
     component = fixture.componentInstance;
-    component.schedule = {
-      rooms: ["Room A"]
-    };
+    component.schedule = new Schedule();
+    component.schedule.rooms = ["Room A"];
     component.setRoomsForm();
     fixture.detectChanges();
   });

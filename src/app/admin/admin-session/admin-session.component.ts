@@ -4,6 +4,9 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {roomSelected, timeSlotSelected, validStartTime, validEndTime} from "./validators/session-validators";
 import {TimeSlot} from "../../shared/time-slot";
+import {Session} from "../../shared/session";
+import {Proposal} from "../../shared/proposal";
+import {Schedule} from "../../shared/schedule";
 
 @Component({
   selector: 'app-admin-session',
@@ -13,22 +16,20 @@ import {TimeSlot} from "../../shared/time-slot";
 
 export class AdminSessionComponent implements OnInit {
   sessionForm: FormGroup;
-  schedule: any;
-  proposal: any;
+  schedule: Schedule;
+  proposal: Proposal;
   proposalId: string;
   addingTimeSlot: boolean;
   addingRoom: boolean;
   errorMessage: string;
-  postData: any;
+  postData: Session;
 
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private conferenceOrganizerService: ConferenceOrganizerService
-              ) {
+              private conferenceOrganizerService: ConferenceOrganizerService) {
     this.addingTimeSlot = false;
     this.addingRoom = false;
-    this.postData = {};
   }
 
   ngOnInit(): void {
@@ -44,20 +45,20 @@ export class AdminSessionComponent implements OnInit {
   }
 
   setProposal(): void {
-    this.conferenceOrganizerService.getProposalById(this.proposalId).subscribe((proposal: any) => {
+    this.conferenceOrganizerService.getProposal(this.proposalId).subscribe((proposal: Proposal) => {
       this.proposal = proposal;
     });
   }
 
-  setRoomsAndTimeSlots() {
-    this.conferenceOrganizerService.getSchedule().subscribe((schedule: any) => {
+  setRoomsAndTimeSlots(): void {
+    this.conferenceOrganizerService.getSchedule().subscribe((schedule: Schedule) => {
       if (schedule) this.schedule = schedule;
       else this.schedule = {rooms: [], timeSlots: []};
       this.createForm();
     });
   }
 
-  createForm() {
+  createForm(): void {
     this.sessionForm = this.formBuilder.group({
       room: ["", Validators.required, roomSelected()],
       timeSlot: ["", Validators.required, timeSlotSelected()],
@@ -80,26 +81,18 @@ export class AdminSessionComponent implements OnInit {
     this.addSession();
   }
 
-   addSession(): void {
-    if(!this.sessionExists()) {
-      this.conferenceOrganizerService.addSession(this.postData).subscribe(() => {
-        this.router.navigate(["admin/schedule"]);
-      });
-    } else {
-      this.errorMessage = "This Session already exists";
+  setPostData(): void {
+    this.postData = new Session(this.proposal, this.sessionForm.value.room, this.sessionForm.value.timeSlot);
+  }
+
+  addRoom(): void {
+    if (this.addingRoom) {
+      this.schedule.rooms.push(this.sessionForm.value.room);
+      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
     }
   }
 
-  sessionExists(): boolean {
-    return this.schedule.sessions.some((session: any) => {
-      return session.standardTime == this.postData.standardTime
-          && session.room == this.postData.room
-          || session.standardTime == this.postData.standardTime
-          && session.break == true;
-    });
-  }
-
-  addTimeSlot() {
+  addTimeSlot(): void {
     if (this.addingTimeSlot) {
       let newTimeSlot: TimeSlot = new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime);
       this.schedule.timeSlots.push(newTimeSlot);
@@ -108,29 +101,23 @@ export class AdminSessionComponent implements OnInit {
     }
   }
 
-  addRoom() {
-    if (this.addingRoom) {
-      this.schedule.rooms.push(this.sessionForm.value.room);
-      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
+   addSession(): void {
+    if(!this.sessionExists()) {
+      this.conferenceOrganizerService.postSession(this.postData).subscribe(() => {
+        this.router.navigate(["admin/schedule"]);
+      });
+    } else {
+      this.errorMessage = "This Session already exists";
     }
   }
 
-  isValidTimeSlot(newTimeSlot: any): boolean {
-    return newTimeSlot.startHour >= 0
-        || newTimeSlot.startMin >= 0
-        || newTimeSlot.endHour >= 0
-        || newTimeSlot.endMin >= 0;
-  }
-
-  setPostData(): void {
-    this.postData.speakerName =  this.proposal.speakerName;
-    this.postData.email = this.proposal.email;
-    this.postData.proposalId = this.proposal.id;
-    this.postData.bio = this.proposal.bio;
-    this.postData.title = this.proposal.title;
-    this.postData.description = this.proposal.description;
-    this.postData.room = this.sessionForm.value.room;
-    this.postData.standardTime = this.sessionForm.value.timeSlot;
+  sessionExists(): boolean {
+    return this.schedule.sessions.some((session: Session) => {
+      return session.standardTime == this.postData.standardTime
+          && session.room == this.postData.room
+          || session.standardTime == this.postData.standardTime
+          && session.break == true;
+    });
   }
 
   toggleAddingTimeSlot(): void {

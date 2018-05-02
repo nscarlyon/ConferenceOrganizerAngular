@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../services/conference-organizer.service";
+import {CFP} from "../shared/CFP";
+import {Schedule} from "../shared/schedule";
 
 @Component({
   selector: 'app-home',
@@ -8,8 +10,8 @@ import {ConferenceOrganizerService} from "../services/conference-organizer.servi
 })
 
 export class HomeComponent implements OnInit {
-  public cfpStatus: string;
-  public cfpMessage: string;
+  cfpStatus: string;
+  cfpMessage: string;
   schedulePublished: boolean;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService) { }
@@ -20,7 +22,7 @@ export class HomeComponent implements OnInit {
   }
 
   SetCfpStatus() {
-    this.conferenceOrganizerService.getCfpStatus().subscribe((response: any) => {
+    this.conferenceOrganizerService.getCfpStatus().subscribe((response: CFP) => {
       this.cfpStatus = response.status;
       if(response.status == "open") this.cfpMessage = "Call for proposals is open!";
       else if(response.status == "closed") this.cfpMessage = "Call for proposals is closed!";
@@ -29,7 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   setScheduleStatus() {
-    this.conferenceOrganizerService.getSchedule().subscribe((response: any) => {
+    this.conferenceOrganizerService.getSchedule().subscribe((response: Schedule) => {
       this.schedulePublished = response.published;
     });
   }

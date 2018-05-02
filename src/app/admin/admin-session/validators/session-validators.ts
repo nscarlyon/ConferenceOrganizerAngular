@@ -45,3 +45,4 @@ function isTimeSlotMissing(control: any): boolean {
       || endTime.endMin < 0;
 }
 
+// test validators!

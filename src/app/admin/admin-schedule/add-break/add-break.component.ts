@@ -28,7 +28,7 @@ export class AddBreakComponent implements OnInit {
   }
 
   saveBreak(): void {
-    this.conferenceOrganizerService.addSession(this.breakForm.value).subscribe(() => {
+    this.conferenceOrganizerService.postSession(this.breakForm.value).subscribe(() => {
       this.schedule.sessions.push(this.breakForm.value);
       this.closeAddingBreak();
     });

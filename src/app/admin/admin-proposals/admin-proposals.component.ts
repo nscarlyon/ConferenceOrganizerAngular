@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, ActivatedRoute} from "@angular/router";
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
+import {Proposal} from "../../shared/proposal";
 
 @Component({
   selector: 'app-admin-proposals',
@@ -9,7 +10,7 @@ import {ConferenceOrganizerService} from "../../services/conference-organizer.se
 })
 
 export class AdminProposalsComponent implements OnInit {
-  proposals: any;
+  proposals: Proposal[];
 
   constructor(private router: Router,
               private activatedRoute: ActivatedRoute,
@@ -20,7 +21,7 @@ export class AdminProposalsComponent implements OnInit {
   }
 
   setProposals() {
-    this.conferenceOrganizerService.getProposals().subscribe((response: any) => {
+    this.conferenceOrganizerService.getProposals().subscribe((response: Proposal[]) => {
       this.proposals = response;
     });
   }
@@ -30,7 +31,7 @@ export class AdminProposalsComponent implements OnInit {
   }
 
   deleteProposal(proposalId: number): void {
-    this.conferenceOrganizerService.deleteProposal(proposalId).subscribe((response: any) => {
+    this.conferenceOrganizerService.deleteProposal(proposalId).subscribe((response: Proposal[]) => {
       this.proposals = response;
     });
   }

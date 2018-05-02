@@ -1,6 +1,7 @@
 import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {FormGroup, FormArray, FormBuilder} from "@angular/forms";
 import {ConferenceOrganizerService} from "../../../services/conference-organizer.service";
+import {Schedule} from "../../../shared/schedule";
 
 @Component({
   selector: 'app-edit-rooms',
@@ -9,7 +10,7 @@ import {ConferenceOrganizerService} from "../../../services/conference-organizer
 })
 export class EditRoomsComponent implements OnInit {
   @Output() editingRooms: EventEmitter<boolean> = new EventEmitter();
-  @Input() schedule: any;
+  @Input() schedule: Schedule;
   roomsForm: FormGroup;
 
   constructor(private conferenceOrganizerService: ConferenceOrganizerService,
@@ -54,7 +55,7 @@ export class EditRoomsComponent implements OnInit {
     let currentRooms: any = this.rooms.controls.map(room => room.value.roomName);
     let newRooms: any = this.roomsToAdd.controls.map(room => room.value.roomToAdd);
     this.schedule.rooms = currentRooms.concat(newRooms);
-    this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
+    this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response: Schedule) => {
       this.closeEditingRooms();
       this.setRoomsForm();
       this.schedule = response;

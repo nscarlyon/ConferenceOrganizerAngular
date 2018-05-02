@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {Router, ActivatedRoute} from "@angular/router";
+import {Schedule} from "../../shared/schedule";
+import {Session} from "../../shared/session";
 
 @Component({
   selector: 'app-admin-schedule',
@@ -9,7 +11,7 @@ import {Router, ActivatedRoute} from "@angular/router";
 })
 
 export class AdminScheduleComponent implements OnInit {
-  schedule: any = {};
+  schedule: Schedule = new Schedule();
   editingRooms: boolean;
   editingTimeSlots: boolean;
   addingBreak: boolean;
@@ -26,19 +28,19 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   setSchedule(): void {
-    this.conferenceOrganizerService.getSchedule().subscribe((response: any) => {
+    this.conferenceOrganizerService.getSchedule().subscribe((response: Schedule) => {
       this.schedule = response;
     });
   }
 
   isBreak(time: string) {
-    return this.schedule.sessions.some((session: any) => {
+    return this.schedule.sessions.some((session: Session) => {
       return session.standardTime == time && session.break == true;
     });
   }
 
   getSessionTitle(time: string, room: string): any {
-    let correctSession: any = this.schedule.sessions.find((session: any) => {
+    let correctSession: any = this.schedule.sessions.find((session: Session) => {
       return session.standardTime == time && session.room == room
     });
     if (correctSession) {
@@ -48,14 +50,14 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   getBreakTitle(time: string): string {
-    let correctSession: any = this.schedule.sessions.find((session: any) => {
+    let correctSession: any = this.schedule.sessions.find((session: Session) => {
       return session.standardTime == time && session.break == true;
     });
     return correctSession.title;
   }
 
   goToEditSessionPage(time: string, room?: string): void {
-    let session: any = this.schedule.sessions.find((session: any) => {
+    let session: any = this.schedule.sessions.find((session: Session) => {
       if(room) return session.standardTime == time && session.room == room;
       return session.standardTime == time;
     });
