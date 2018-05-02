@@ -3,6 +3,7 @@ import {ConferenceOrganizerService} from "../../services/conference-organizer.se
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {roomSelected, timeSlotSelected, validStartTime, validEndTime} from "./validators/session-validators";
+import {TimeSlot} from "../../shared/time-slot";
 
 @Component({
   selector: 'app-admin-session',
@@ -15,8 +16,6 @@ export class AdminSessionComponent implements OnInit {
   schedule: any;
   proposal: any;
   proposalId: string;
-  startTime: string;
-  endTime: string;
   addingTimeSlot: boolean;
   addingRoom: boolean;
   errorMessage: string;
@@ -67,10 +66,6 @@ export class AdminSessionComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
-    this.addSession();
-  }
-
   isTimeSlotInvalid(): boolean {
     return (this.sessionForm.get('startTime').invalid
       && (this.sessionForm.get('startTime').dirty || this.sessionForm.get('startTime').touched))
@@ -78,11 +73,14 @@ export class AdminSessionComponent implements OnInit {
       && (this.sessionForm.get('endTime').dirty || this.sessionForm.get('endTime').touched))
   }
 
-   addSession(): void {
-     this.setPostData();
-     this.addRoom();
-     this.addTimeSlot();
+  onSubmit(): void {
+    this.setPostData();
+    this.addRoom();
+    this.addTimeSlot();
+    this.addSession();
+  }
 
+   addSession(): void {
     if(!this.sessionExists()) {
       this.conferenceOrganizerService.addSession(this.postData).subscribe(() => {
         this.router.navigate(["admin/schedule"]);
@@ -103,11 +101,10 @@ export class AdminSessionComponent implements OnInit {
 
   addTimeSlot() {
     if (this.addingTimeSlot) {
-      let newTimeSlot: any = this.getNewTimeSlot();
+      let newTimeSlot: TimeSlot = new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime);
       this.schedule.timeSlots.push(newTimeSlot);
       this.postData.standardTime = newTimeSlot.standardTime;
-      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
-      });
+      this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
     }
   }
 
@@ -116,34 +113,6 @@ export class AdminSessionComponent implements OnInit {
       this.schedule.rooms.push(this.sessionForm.value.room);
       this.conferenceOrganizerService.putSchedule(this.schedule).subscribe();
     }
-  }
-
-  getNewTimeSlot(): any {
-    let timeSlot: any = {};
-    let startTime: string = this.sessionForm.value.startTime;
-    let endTime: string = this.sessionForm.value.endTime;
-    let standardStartTime = this.convertMilitaryToStandardTime(startTime);
-    let standardEndTime = this.convertMilitaryToStandardTime(endTime);
-    timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
-    timeSlot.startHour = Number(startTime.split(":")[0]);
-    timeSlot.startMin = Number(startTime.split(":")[1]);
-    timeSlot.endHour = Number(endTime.split(":")[0]);
-    timeSlot.endMin = Number(endTime.split(":")[1]);
-    timeSlot.endHour <= 11
-      ? timeSlot.standardTime+= " A.M"
-      : timeSlot.standardTime+=" P.M";
-    return timeSlot;
-  }
-
-  convertMilitaryToStandardTime(time: string): string {
-    let splitTime: string[] = time.split(":");
-    let hour: number = Number(splitTime[0]);
-    let min: string = splitTime[1];
-    if(hour > 12) {
-      let hourConversions: any = {13: 1, 14: 2, 15: 3, 16: 4, 17: 5, 18: 6, 19: 7, 20: 8, 21: 9, 22: 10, 23: 11, 24: 12};
-      hour = hourConversions[hour];
-    }
-    return `${hour}:${min}`;
   }
 
   isValidTimeSlot(newTimeSlot: any): boolean {
