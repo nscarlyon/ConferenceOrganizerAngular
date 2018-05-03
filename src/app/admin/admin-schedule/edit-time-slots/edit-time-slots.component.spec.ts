@@ -4,6 +4,7 @@ import { EditTimeSlotsComponent } from './edit-time-slots.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {ConferenceOrganizerService} from "../../../services/conference-organizer.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {TimeSlot} from "../../../shared/time-slot";
 
 describe('EditTimeSlotsComponent', () => {
   let component: EditTimeSlotsComponent;
@@ -67,19 +68,7 @@ describe('EditTimeSlotsComponent', () => {
     component.timeSlotsToAdd.controls[1].patchValue({startTime: "13:30", endTime: "14:46"});
     component.saveTimeSlots();
 
-    expect(component.schedule.timeSlots[1]).toEqual({
-      startHour: 9,
-      startMin: 0,
-      endHour: 10,
-      endMin: 0,
-      standardTime: "9:00-10:00 A.M"
-    });
-    expect(component.schedule.timeSlots[2]).toEqual({
-      startHour: 13,
-      startMin: 30,
-      endHour: 14,
-      endMin: 46,
-      standardTime: "1:30-2:46 P.M"
-    });
+    expect(component.schedule.timeSlots[1]).toEqual(new TimeSlot("9:00", "10:00"));
+    expect(component.schedule.timeSlots[2]).toEqual(new TimeSlot("13:30", "14:46"));
   });
 });

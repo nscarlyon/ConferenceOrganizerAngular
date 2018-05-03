@@ -90,9 +90,9 @@ describe('AdminSessionComponent', () => {
       description: "description",
       scheduledTimes: []
     });
+    let existingSession: Session = new Session();
     component.schedule = new Schedule();
-    // should add session that doesn't conflict
-    component.schedule.sessions = [];
+    component.schedule.sessions = [existingSession];
     component.postData = new Session();
     component.createForm();
     component.sessionForm.patchValue({room: "Room A"});
@@ -100,6 +100,7 @@ describe('AdminSessionComponent', () => {
     spyOn(conferenceOrganizerService, "postSession").and.returnValue(Observable.of());
     component.onSubmit();
     expect(conferenceOrganizerService.postSession as Spy).toHaveBeenCalledWith(component.postData);
+    expect(component.schedule.sessions).toEqual([existingSession]);
   });
 
   it('should not add session when session already exists', () => {
