@@ -4,7 +4,7 @@
 <div class="card-columns">
     <div *ngFor="let proposal of proposals" class="card text-white bg-dark">
       <div class="card-header text-center">
-        <h5 class="card-title">{{proposal.title}}- {{proposal.speakerName}}</h5>
+        <h5 class="card-title">{{proposal.title}} - {{proposal.speakerName}}</h5>
         <div *ngIf="proposal.scheduledSessions">
           <div *ngFor="let scheduledSession of proposal.scheduledSessions">
             <strong>Room:</strong> {{scheduledSession.room}}
