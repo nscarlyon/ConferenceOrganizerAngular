@@ -75,8 +75,8 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   clearSchedule(): void {
-    this.conferenceOrganizerService.deleteSchedule(this.schedule).subscribe(() => {
-      this.schedule = null;
+    this.conferenceOrganizerService.clearSchedule(this.schedule).subscribe(() => {
+      this.schedule.sessions = [];
     });
   }
 

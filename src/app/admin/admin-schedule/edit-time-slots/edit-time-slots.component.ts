@@ -1,6 +1,7 @@
 import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import {FormGroup, FormBuilder, FormArray} from "@angular/forms";
 import {ConferenceOrganizerService} from "../../../services/conference-organizer.service";
+import {TimeSlot} from "../../../shared/time-slot";
 
 @Component({
   selector: 'app-edit-time-slots',
@@ -28,7 +29,7 @@ export class EditTimeSlotsComponent implements OnInit {
     })
   }
 
-  getScheduleTimeSlots() {
+  getScheduleTimeSlots(): FormGroup[] {
     return this.schedule.timeSlots.map((timeSlot: any) => {
       return this.formBuilder.group({
         timeSlot: timeSlot,
@@ -73,34 +74,9 @@ export class EditTimeSlotsComponent implements OnInit {
   }
 
   getNewTimeSlots(): any[] {
-    let newTimeSlots: any[] = this.timeSlotsToAdd.controls.map(t => {
-      let timeSlot: any = {};
-      let startTime: string = t.value.startTime;
-      let endTime: string = t.value.endTime;
-      timeSlot.startHour = Number(startTime.split(":")[0]);
-      timeSlot.startMin = Number(startTime.split(":")[1]);
-      timeSlot.endHour = Number(endTime.split(":")[0]);
-      timeSlot.endMin = Number(endTime.split(":")[1]);
-      let standardStartTime = this.convertMilitaryToStandardTime(startTime);
-      let standardEndTime = this.convertMilitaryToStandardTime(endTime);
-      timeSlot.standardTime = `${standardStartTime}-${standardEndTime}`;
-      timeSlot.endHour <= 11
-        ? timeSlot.standardTime+= " A.M"
-        : timeSlot.standardTime+=" P.M";
-      return timeSlot;
+    return this.timeSlotsToAdd.controls.map(t => {
+      return new TimeSlot(t.value.startTime, t.value.endTime);
     });
-    return newTimeSlots;
-  }
-
-  convertMilitaryToStandardTime(time: string): string {
-    let splitTime: string[] = time.split(":");
-    let hour: number = Number(splitTime[0]);
-    let min: string = splitTime[1];
-    if(hour > 12) {
-      let hourConversions: any = {13: 1, 14: 2, 15: 3, 16: 4, 17: 5, 18: 6, 19: 7, 20: 8, 21: 9, 22: 10, 23: 11, 24: 12};
-      hour = hourConversions[hour];
-    }
-    return `${hour}:${min}`;
   }
 
   closeEditingTimeSlots(): void {

@@ -42,6 +42,7 @@ export class AdminProposalsComponent implements OnInit {
 
   scheduledSessionsToProposal(proposal, scheduledSessions: Session[]): void {
     scheduledSessions.forEach(session => proposal.scheduledSessions.push({
+      sessionId: session.id,
       room: session.room,
       standardTime: session.standardTime
     }))
@@ -51,10 +52,19 @@ export class AdminProposalsComponent implements OnInit {
     this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
   }
 
-  deleteProposal(proposalId: string): void {
-    this.conferenceOrganizerService.deleteProposal(proposalId).subscribe((response: any[]) => {
+  deleteProposal(proposal: any): void {
+    this.conferenceOrganizerService.deleteProposal(proposal.id).subscribe((response: any[]) => {
+      this.deleteScheduledSessions(proposal);
       this.proposals = response;
       this.setScheduledSessions();
     });
+  }
+
+  deleteScheduledSessions(proposal: any): void {
+    if (proposal.scheduledSessions) {
+      proposal.scheduledSessions.forEach(session => {
+        this.conferenceOrganizerService.deleteSession(session.id).subscribe();
+      });
+    }
   }
 }

@@ -71,7 +71,7 @@ export class ConferenceOrganizerService {
     });
   }
 
-  deleteSchedule(schedule: any): Observable<any> {
+  clearSchedule(schedule: any): Observable<any> {
     return this._http
       .delete(`${this._url}/schedule`, this._options).pipe(catchError((error) => {
         return "error";
