@@ -22,7 +22,7 @@ describe("Time Slot Tests", () => {
     expect(timeSlot.standardTime).toEqual("8:00-9:00 A.M");
   });
 
-  it("should convert from military time after 1PM to standard time", () => {
+  it("should convert from military time after 12PM to standard time", () => {
     let timeSlot: TimeSlot = new TimeSlot("13:00", "14:00");
     expect(timeSlot.standardTime).toEqual("1:00-2:00 P.M");
   });

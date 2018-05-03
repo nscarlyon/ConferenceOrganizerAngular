@@ -19,8 +19,8 @@ export class TimeSlot {
     this.standardTime = `${standardStartTime}-${standardEndTime}`;
 
     this.endHour <= 11
-      ? this.standardTime+= " A.M"
-      : this.standardTime+=" P.M";
+      ? this.standardTime += " A.M"
+      : this.standardTime += " P.M";
   }
 
 
@@ -28,8 +28,21 @@ export class TimeSlot {
     let splitTime: string[] = time.split(":");
     let hour: number = Number(splitTime[0]);
     let min: string = splitTime[1];
-    if(hour > 12) {
-      let hourConversions: any = {13: 1, 14: 2, 15: 3, 16: 4, 17: 5, 18: 6, 19: 7, 20: 8, 21: 9, 22: 10, 23: 11, 24: 12};
+    if (hour > 12) {
+      let hourConversions: any = {
+        13: 1,
+        14: 2,
+        15: 3,
+        16: 4,
+        17: 5,
+        18: 6,
+        19: 7,
+        20: 8,
+        21: 9,
+        22: 10,
+        23: 11,
+        24: 12
+      };
       hour = hourConversions[hour];
     }
     return `${hour}:${min}`;

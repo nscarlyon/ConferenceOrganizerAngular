@@ -6,10 +6,17 @@ import {RouterTestingModule} from "@angular/router/testing";
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {Session} from "../../shared/session";
+import {Proposal} from "../../shared/proposal";
+import {Schedule} from "../../shared/schedule";
+import {TimeSlot} from "../../shared/time-slot";
+import {Observable} from "rxjs";
+import Spy = jasmine.Spy;
 
 describe('AdminSessionComponent', () => {
   let component: AdminSessionComponent;
   let fixture: ComponentFixture<AdminSessionComponent>;
+  let conferenceOrganizerService: ConferenceOrganizerService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -24,6 +31,7 @@ describe('AdminSessionComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AdminSessionComponent);
     component = fixture.componentInstance;
+    conferenceOrganizerService = TestBed.get(ConferenceOrganizerService);
     fixture.detectChanges();
   });
 
@@ -31,36 +39,88 @@ describe('AdminSessionComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  //
-  // it('should validate endTime hour is greater than startTime hour', () => {
-  //   component.startTime = "09:00";
-  //   component.endTime = "10:00";
-  //   expect(component.isValidTimeSlot()).toEqual(true);
-  //   component.startTime = "10:00";
-  //   component.endTime = "09:00";
-  //   expect(component.isValidTimeSlot()).toEqual(false);
-  // });
+  it('should create postData for session', () => {
+    component.proposal = new Proposal({
+      id: "1",
+      speakerName: "Speaker",
+      bio: "bio",
+      email: "email",
+      title: "title",
+      description: "description",
+      scheduledTimes: []
+    });
+    component.createForm();
+    component.sessionForm.patchValue({room: "Room A"});
+    component.sessionForm.patchValue({timeSlot: "8:00-9:00 A.M"});
+    let expected: Session = new Session(component.proposal, "Room A", "8:00-9:00 A.M");
+    component.setPostData();
+    expect(component.postData).toEqual(expected);
+  });
 
-  // it('should validate endTime is greater than startTime with same hour', () => {
-  //   component.startTime = "10:00";
-  //   component.endTime = "10:30";
-  //   expect(component.isValidTimeSlot()).toEqual(true);
-  //   component.startTime = "10:30";
-  //   component.endTime = "10:00";
-  //   expect(component.isValidTimeSlot()).toEqual(false);
-  // });
-  //
-  // it('should find conflict if timeSlot already exists', () => {
-  //   component.schedule = {timeSlots: ["9:00-10:00"]};
-  //   component.startTime = "9:00";
-  //   component.endTime = "10:00";
-  //   expect(component.noTimeSlotConflict()).toEqual(true);
-  // });
-  //
-  // it('should find conflict if timeSlot overlaps with another timeSlot with startHour starting early', () => {
-  //   component.schedule = {timeSlots: ["9:00-10:00"]};
-  //   component.startTime = "9:00";
-  //   component.endTime = "9:30";
-  //   expect(component.noTimeSlotConflict()).toEqual(true);
-  // });
+  it('should add room if user is adding room', () => {
+    component.addingRoom = true;
+    component.schedule = new Schedule();
+    component.schedule.rooms = [];
+    component.createForm();
+    component.sessionForm.patchValue({room: "Room A"});
+    component.addRoom();
+    expect(component.schedule.rooms[0]).toEqual("Room A");
+  });
+
+  it('should add timeslot if user is adding timeSlot', () => {
+    component.addingTimeSlot = true;
+    component.schedule = new Schedule();
+    component.schedule.timeSlots = [];
+    component.postData = new Session();
+    component.createForm();
+    component.sessionForm.patchValue({startTime: "09:00"});
+    component.sessionForm.patchValue({endTime: "10:00"});
+    component.addTimeSlot();
+    let expected: TimeSlot = new TimeSlot("09:00", "10:00");
+    expect(component.schedule.timeSlots[0]).toEqual(expected);
+  });
+
+  it('should add session', () => {
+    component.proposal = new Proposal({
+      id: "1",
+      speakerName: "Speaker",
+      bio: "bio",
+      email: "email",
+      title: "title",
+      description: "description",
+      scheduledTimes: []
+    });
+    component.schedule = new Schedule();
+    // should add session that doesn't conflict
+    component.schedule.sessions = [];
+    component.postData = new Session();
+    component.createForm();
+    component.sessionForm.patchValue({room: "Room A"});
+    component.sessionForm.patchValue({timeSlot: "9:00-10:00 A.M"});
+    spyOn(conferenceOrganizerService, "postSession").and.returnValue(Observable.of());
+    component.onSubmit();
+    expect(conferenceOrganizerService.postSession as Spy).toHaveBeenCalledWith(component.postData);
+  });
+
+  it('should not add session when session already exists', () => {
+    component.proposal = new Proposal({
+      id: "1",
+      speakerName: "Speaker",
+      bio: "bio",
+      email: "email",
+      title: "title",
+      description: "description",
+      scheduledTimes: []
+    });
+    component.schedule = new Schedule();
+    component.schedule.sessions = [new Session(component.proposal, "Room A", "9:00-10:00 A.M")];
+    component.postData = new Session();
+    component.createForm();
+    component.sessionForm.patchValue({room: "Room A"});
+    component.sessionForm.patchValue({timeSlot: "9:00-10:00 A.M"});
+    spyOn(conferenceOrganizerService, "postSession").and.returnValue(Observable.of());
+    component.onSubmit();
+    expect(conferenceOrganizerService.postSession as Spy).not.toHaveBeenCalled();
+    expect(component.errorMessage).toEqual('This Session already exists');
+  });
 });
