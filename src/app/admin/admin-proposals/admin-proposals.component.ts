@@ -63,7 +63,7 @@ export class AdminProposalsComponent implements OnInit {
   deleteScheduledSessions(proposal: any): void {
     if (proposal.scheduledSessions) {
       proposal.scheduledSessions.forEach(session => {
-        this.conferenceOrganizerService.deleteSession(session.id).subscribe();
+        this.conferenceOrganizerService.deleteSession(session.sessionId).subscribe();
       });
     }
   }
