@@ -28,8 +28,6 @@ export class AdminSessionComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private conferenceOrganizerService: ConferenceOrganizerService) {
-    this.addingTimeSlot = false;
-    this.addingRoom = false;
   }
 
   ngOnInit(): void {
@@ -54,6 +52,8 @@ export class AdminSessionComponent implements OnInit {
     this.conferenceOrganizerService.getSchedule().subscribe((schedule: Schedule) => {
       if (schedule) this.schedule = schedule;
       else this.schedule = {rooms: [], timeSlots: []};
+      this.schedule.timeSlots.length == 0 ? this.addingTimeSlot = true : this.addingTimeSlot = false;
+      this.schedule.rooms.length == 0 ? this.addingRoom= true : this.addingRoom= false;
       this.createForm();
     });
   }

@@ -7,13 +7,11 @@
 
 <div *ngIf="schedule" [formGroup]="sessionForm" (ngSubmit)="onSubmit()">
   <div class="form-group" *ngIf="!addingRoom">
-    <label class="">Select Room:</label>
-    <div>
+      <label class="">Select Room:</label>
       <select class="form-control" formControlName="room">
         <option>Select Room</option>
         <option *ngFor="let room of schedule.rooms">{{room}}</option>
       </select>
-    </div>
     <div>
       <button class="btn btn-info" (click)="toggleAddingRoom()">Add New Room</button>
     </div>
@@ -27,7 +25,7 @@
 
   <div class="form-group" *ngIf="addingRoom">
     <label>Room Name:</label><input type="text" formControlName="room">
-    <button class="btn btn-danger" (click)="toggleAddingRoom()">Remove Room</button>
+    <button *ngIf="schedule.rooms.length > 0" class="btn btn-danger" (click)="toggleAddingRoom()">Remove Room</button>
     <div *ngIf="sessionForm.get('room').invalid && (sessionForm.get('room').dirty || sessionForm.get('room').touched)"
          class="alert alert-danger">
       <div *ngIf="sessionForm.get('room').errors.required && addingRoom">
@@ -37,16 +35,17 @@
   </div>
 
   <div class="form-group" *ngIf="!addingTimeSlot">
-    <label class="">Select Time:</label>
-    <select class="form-control" formControlName="timeSlot">
-      <option>Select Time Slot</option>
-      <option *ngFor="let timeSlot of schedule.timeSlots">{{timeSlot.standardTime}}</option>
-    </select>
+      <label class="">Select Time:</label>
+      <select class="form-control" formControlName="timeSlot">
+        <option>Select Time Slot</option>
+        <option *ngFor="let timeSlot of schedule.timeSlots">{{timeSlot.standardTime}}</option>
+      </select>
     <div>
       <button class="btn btn-info" (click)="toggleAddingTimeSlot()">Add New Time Slot</button>
     </div>
-    <div *ngIf="sessionForm.get('timeSlot').invalid && (sessionForm.get('timeSlot').dirty || sessionForm.get('timeSlot').touched)"
-         class="alert alert-danger">
+    <div
+      *ngIf="sessionForm.get('timeSlot').invalid && (sessionForm.get('timeSlot').dirty || sessionForm.get('timeSlot').touched)"
+      class="alert alert-danger">
       <div *ngIf="sessionForm.get('timeSlot').errors.noTimeSlot">
         Please select a time slot.
       </div>
@@ -54,9 +53,10 @@
   </div>
 
   <div class="form-group" *ngIf="addingTimeSlot">
-    <label>Start Time: </label><input class="form-control" type="time" placeholder="Time Slot" formControlName="startTime">
+    <label>Start Time: </label><input class="form-control" type="time" placeholder="Time Slot"
+                                      formControlName="startTime">
     <label>End Time: </label> <input class="form-control" type="time" placeholder="Time Slot" formControlName="endTime">
-    <button class="btn btn-danger" (click)="toggleAddingTimeSlot()">Remove Time Slot</button>
+    <button *ngIf="schedule.timeSlots.length > 0" class="btn btn-danger" (click)="toggleAddingTimeSlot()">Remove Time Slot</button>
     <div *ngIf="isTimeSlotInvalid()"
          class="alert alert-danger">
       <div *ngIf="sessionForm.get('startTime').errors.timeSlotMissing">
