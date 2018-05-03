@@ -103,7 +103,7 @@ export class ConferenceOrganizerService {
                 .post(`${this._url}/proposals`, proposal, this._options);
   }
 
-  deleteProposal(proposalId: number): Observable<any> {
+  deleteProposal(proposalId: string): Observable<any> {
     return this._http
       .delete(`${this._url}/proposals/${proposalId}`, this._options).pipe(catchError((error) => {
         return "error";

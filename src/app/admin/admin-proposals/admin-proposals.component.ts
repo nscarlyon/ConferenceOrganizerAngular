@@ -51,7 +51,7 @@ export class AdminProposalsComponent implements OnInit {
     this.router.navigate([`../sessions/${id}`], {relativeTo: this.activatedRoute})
   }
 
-  deleteProposal(proposalId: number): void {
+  deleteProposal(proposalId: string): void {
     this.conferenceOrganizerService.deleteProposal(proposalId).subscribe((response: any[]) => {
       this.proposals = response;
       this.setScheduledSessions();
