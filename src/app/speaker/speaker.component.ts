@@ -48,8 +48,8 @@ export class SpeakerComponent implements OnInit {
   }
 
    onSubmit(): void {
-    this.conferenceOrganizerService.postProposal(this.proposalForm.value).subscribe((response) => {
-      this.message = response["message"];
+    this.conferenceOrganizerService.postProposal(this.proposalForm.value).subscribe(() => {
+      this.message = "Proposal successfully submitted";
     });
   }
 }
