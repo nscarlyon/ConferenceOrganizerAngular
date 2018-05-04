@@ -47,7 +47,7 @@ describe('AdminHomeComponent', () => {
     expect(conferenceOrganizerService.openCfp as Spy).toHaveBeenCalledWith(component.cfp);
   });
 
-  it('should open cfp', () => {
+  it('should close cfp', () => {
     component.cfp = {id: "cfp-1", status: "open"};
     spyOn(conferenceOrganizerService, "closeCfp").and.returnValue(Observable.of());
     component.closeCfp();
