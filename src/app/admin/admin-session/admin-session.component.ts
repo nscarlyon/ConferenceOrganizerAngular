@@ -18,7 +18,6 @@ export class AdminSessionComponent implements OnInit {
   sessionForm: FormGroup;
   schedule: Schedule;
   proposal: Proposal;
-  proposalId: string;
   addingTimeSlot: boolean;
   addingRoom: boolean;
   errorMessage: string;
@@ -31,20 +30,16 @@ export class AdminSessionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setProposalId();
+    this.setProposal();
     this.setRoomsAndTimeSlots();
   }
 
-  setProposalId(): void {
-    this.activatedRoute.params.subscribe((params: any) => {
-      this.proposalId = params['id'];
-      this.setProposal();
-    });
-  }
-
   setProposal(): void {
-    this.conferenceOrganizerService.getProposal(this.proposalId).subscribe((proposal: Proposal) => {
-      this.proposal = proposal;
+    this.activatedRoute.params.subscribe((params: any) => {
+      let proposalId: string = params['id'];
+      this.conferenceOrganizerService.getProposal(proposalId).subscribe((proposal: Proposal) => {
+        this.proposal = proposal;
+      });
     });
   }
 
@@ -53,7 +48,7 @@ export class AdminSessionComponent implements OnInit {
       if (schedule) this.schedule = schedule;
       else this.schedule = {rooms: [], timeSlots: []};
       this.schedule.timeSlots.length == 0 ? this.addingTimeSlot = true : this.addingTimeSlot = false;
-      this.schedule.rooms.length == 0 ? this.addingRoom = true : this.addingRoom= false;
+      this.schedule.rooms.length == 0 ? this.addingRoom = true : this.addingRoom = false;
       this.createForm();
     });
   }
@@ -80,32 +75,18 @@ export class AdminSessionComponent implements OnInit {
   }
 
   setPostData(): void {
-    let standardTime: string = "";
-    if (this.addingTimeSlot) {
-      standardTime = new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime).standardTime;
-      this.postData = new Session(this.proposal, this.sessionForm.value.room, standardTime);
-    }
-    else {
-      standardTime = this.sessionForm.value.timeSlot;
-      this.postData = new Session(this.proposal, this.sessionForm.value.room, standardTime);
-    }
-  }
-
-  addRoom(): void {
-      this.schedule.rooms.push(this.sessionForm.value.room);
-  }
-
-  addTimeSlot(): void {
-      let newTimeSlot: TimeSlot = new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime);
-      this.schedule.timeSlots.push(newTimeSlot);
-      this.postData.standardTime = newTimeSlot.standardTime;
+    let standardTime: string = this.addingTimeSlot
+      ? new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime).standardTime
+      : this.sessionForm.value.timeSlot;
+    
+    this.postData = new Session(this.proposal, this.sessionForm.value.room, standardTime);
   }
 
    addSession(): void {
     if(!this.sessionExists()) {
       this.conferenceOrganizerService.postSession(this.postData).subscribe(() => {
-        if (this.addingTimeSlot) this.addTimeSlot();
         if (this.addingRoom) this.addRoom();
+        if (this.addingTimeSlot) this.addTimeSlot();
         this.conferenceOrganizerService.putSchedule(this.schedule).subscribe(() => {
           this.router.navigate(["admin/schedule"]);
         });
@@ -118,10 +99,20 @@ export class AdminSessionComponent implements OnInit {
   sessionExists(): boolean {
     return this.schedule.sessions.some((session: Session) => {
       return session.standardTime == this.postData.standardTime
-          && session.room == this.postData.room
-          || session.standardTime == this.postData.standardTime
-          && session.break == true;
+        && session.room == this.postData.room
+        || session.standardTime == this.postData.standardTime
+        && session.break == true;
     });
+  }
+
+  addRoom(): void {
+    this.schedule.rooms.push(this.sessionForm.value.room);
+  }
+
+  addTimeSlot(): void {
+    let newTimeSlot: TimeSlot = new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime);
+    this.schedule.timeSlots.push(newTimeSlot);
+    this.postData.standardTime = newTimeSlot.standardTime;
   }
 
   toggleAddingTimeSlot(): void {
