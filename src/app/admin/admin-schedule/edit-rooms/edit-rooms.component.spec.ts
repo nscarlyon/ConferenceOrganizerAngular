@@ -23,7 +23,7 @@ describe('EditRoomsComponent', () => {
     fixture = TestBed.createComponent(EditRoomsComponent);
     component = fixture.componentInstance;
     component.schedule = new Schedule();
-    component.schedule.rooms = ["Room A"];
+    component.schedule.rooms = ["Room A", "Room B"];
     component.setRoomsForm();
     fixture.detectChanges();
   });
@@ -32,9 +32,10 @@ describe('EditRoomsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should delete one of current rooms by index', () => {
+  it('should delete one of the current rooms by index', () => {
     component.deleteRoom(0);
-    expect(component.rooms.length).toEqual(0);
+    expect(component.rooms.controls.length).toEqual(1);
+    expect(component.rooms.controls[0].value.roomName).toEqual("Room B");
   });
 
   it('should add room', () => {
@@ -53,6 +54,6 @@ describe('EditRoomsComponent', () => {
     component.addRoom();
     component.addRoom();
     component.saveRooms();
-    expect(component.schedule.rooms.length).toEqual(3);
+    expect(component.schedule.rooms.length).toEqual(4);
   });
 });
