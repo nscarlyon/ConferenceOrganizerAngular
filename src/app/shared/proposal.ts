@@ -5,6 +5,7 @@ export class Proposal {
   bio: string;
   title: string;
   description: string;
+  scheduledSessions: ScheduledSession[];
 
   constructor(proposal?: any) {
     if(proposal) this.setProposalFields(proposal);
@@ -17,5 +18,17 @@ export class Proposal {
     this.bio = proposal.bio;
     this.title = proposal.title;
     this.description = proposal.description;
+  }
+}
+
+export class ScheduledSession {
+  sessionId: string;
+  room: string;
+  standardTime: string;
+
+  constructor(sessionId: string, room: string, standardTime: string) {
+    this.sessionId = sessionId;
+    this.room = room;
+    this.standardTime = standardTime;
   }
 }

@@ -6,7 +6,7 @@ import {ConferenceOrganizerService} from "../../services/conference-organizer.se
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import Spy = jasmine.Spy;
-import {Proposal} from "../../shared/proposal";
+import {Proposal, ScheduledSession} from "../../shared/proposal";
 import {Session} from "../../shared/session";
 
 describe('AdminProposalsComponent', () => {
@@ -35,6 +35,7 @@ describe('AdminProposalsComponent', () => {
       email: "email-1",
       bio: "bio-1",
       description: "description-1",
+      scheduledSessions: new ScheduledSession("3", "Room A", "9:00-10:00 A.M")
     });
     proposalTwo = new Proposal({
       id: "2",
@@ -43,7 +44,8 @@ describe('AdminProposalsComponent', () => {
       email: "email-2",
       bio: "bio-2",
       description: "description-2",
-    });
+      scheduledSessions: new ScheduledSession("4", "Room B", "9:00-10:00 A.M")
+  });
     component.proposals = [proposalOne, proposalTwo];
     conferenceOrganizerService = TestBed.get(ConferenceOrganizerService);
     fixture.detectChanges();
@@ -60,29 +62,12 @@ describe('AdminProposalsComponent', () => {
     expect(component.proposals).toEqual([proposalOne, proposalTwo]);
   });
 
-  it('should set scheduled sessions for proposal', () => {
-    let sessionOne: Session = new Session(proposalOne, "Room A", "9:00-10:00 A.M");
-    sessionOne.id = "1";
-    let sessionTwo: Session = new Session(proposalOne, "Room B", "10:00-11:00 A.M");
-    sessionTwo.id = "2";
-    let sessionThree: Session = new Session(proposalTwo, "Room C", "10:00-11:00 A.M");
-    sessionThree.id = "3";
-    spyOn(conferenceOrganizerService, 'getSessions').and.returnValue(Observable.of([sessionOne, sessionTwo, sessionThree]));
-
-    component.setScheduledSessions();
-    expect(component.proposals[0].scheduledSessions).toEqual([
-      {sessionId: "1", room: "Room A", standardTime: "9:00-10:00 A.M"},
-      {sessionId: "2", room: "Room B", standardTime: "10:00-11:00 A.M"},
-    ]);
-    expect(component.proposals[1].scheduledSessions).toEqual([
-      {sessionId: "3", room: "Room C", standardTime: "10:00-11:00 A.M"}
-    ]);
-  });
-
-  it("should delete a proposal and reset proposals", () => {
+  it("should delete a proposal and corresponding scheduled sessions", () => {
     spyOn(conferenceOrganizerService, 'deleteProposal').and.returnValue(Observable.of([proposalTwo]));
+    spyOn(conferenceOrganizerService, 'deleteSession').and.returnValue(Observable.of());
     component.deleteProposal(proposalOne);
     expect(component.proposals).toEqual([proposalTwo]);
     expect(conferenceOrganizerService.deleteProposal as Spy).toHaveBeenCalledWith("1");
+    expect(conferenceOrganizerService.deleteSession as Spy).toHaveBeenCalledWith("3");
   });
 });
