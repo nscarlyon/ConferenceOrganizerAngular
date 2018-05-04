@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AdminProposalsComponent } from './admin-proposals.component';
 import {RouterTestingModule} from "@angular/router/testing";
 import {ConferenceOrganizerService} from "../../services/conference-organizer.service";
@@ -7,7 +6,6 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import Spy = jasmine.Spy;
 import {Proposal, ScheduledSession} from "../../shared/proposal";
-import {Session} from "../../shared/session";
 
 describe('AdminProposalsComponent', () => {
   let conferenceOrganizerService: ConferenceOrganizerService;
