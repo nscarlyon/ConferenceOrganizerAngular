@@ -24,9 +24,8 @@ describe('EditTimeSlotsComponent', () => {
     component = fixture.componentInstance;
     component.schedule = {
       timeSlots: [
-        {
-          standardTime: "8:00-9:00 A.M"
-        }
+        new TimeSlot("08:00", "9:00"),
+        new TimeSlot("09:00", "10:00")
       ]
     };
     component.setTimeSlotsForm();
@@ -37,9 +36,11 @@ describe('EditTimeSlotsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should delete one of current timeslots by index', () => {
+  it('should delete one of the current timeSlots by index', () => {
     component.deleteTimeSlot(0);
-    expect(component.timeSlots.length).toEqual(0);
+    let remainingTimeSlot = component.timeSlots.controls[0].value.timeSlot.standardTime;
+    expect(component.timeSlots.length).toEqual(1);
+    expect(remainingTimeSlot).toEqual("9:00-10:00 A.M");
   });
 
   it('should add timeSlot', () => {
@@ -50,6 +51,7 @@ describe('EditTimeSlotsComponent', () => {
 
   it('should delete added timeSlot by index', () => {
     component.addTimeSlot();
+    expect(component.timeSlotsToAdd.length).toEqual(1);
     component.deleteTimeSlotToAdd(0);
     expect(component.timeSlotsToAdd.length).toEqual(0);
   });
@@ -57,18 +59,15 @@ describe('EditTimeSlotsComponent', () => {
   it('should save all timeSlots', () => {
     component.addTimeSlot();
     component.addTimeSlot();
-    component.saveTimeSlots();
-    expect(component.schedule.timeSlots.length).toEqual(3);
-  });
-
-  it('should convert military timeSlots to new timeSlots', () => {
-    component.addTimeSlot();
-    component.addTimeSlot();
-    component.timeSlotsToAdd.controls[0].patchValue({startTime: "9:00", endTime: "10:00"});
+    component.timeSlotsToAdd.controls[0].patchValue({startTime: "12:00", endTime: "13:00"});
     component.timeSlotsToAdd.controls[1].patchValue({startTime: "13:30", endTime: "14:46"});
     component.saveTimeSlots();
-
-    expect(component.schedule.timeSlots[1]).toEqual(new TimeSlot("9:00", "10:00"));
-    expect(component.schedule.timeSlots[2]).toEqual(new TimeSlot("13:30", "14:46"));
+    let expectedTimeSlots: TimeSlot[] = [
+      new TimeSlot("08:00", "09:00"),
+      new TimeSlot("09:00", "10:00"),
+      new TimeSlot("12:00", "13:00"),
+      new TimeSlot("13:30", "14:46")
+    ];
+    expect(component.schedule.timeSlots).toEqual(expectedTimeSlots);
   });
 });

@@ -40,6 +40,7 @@ export class EditTimeSlotsComponent implements OnInit {
 
   deleteTimeSlot(timeSlotIndex: number): void {
     this.timeSlots.removeAt(timeSlotIndex);
+    this.schedule.timeSlots.splice(timeSlotIndex, 1);
   }
 
   deleteTimeSlotToAdd(timeSlotToAddIndex: number): void {
@@ -63,7 +64,7 @@ export class EditTimeSlotsComponent implements OnInit {
 
   saveTimeSlots(): void {
     let newTimeSlots: any[] = this.getNewTimeSlots();
-    let currentTimeSlots: any[] = this.timeSlots.controls.map(t => t.get('timeSlot').value);
+    let currentTimeSlots: any[] = this.schedule.timeSlots;
     this.schedule.timeSlots = currentTimeSlots.concat(newTimeSlots);
 
     this.conferenceOrganizerService.putSchedule(this.schedule).subscribe((response) => {
