@@ -18,6 +18,7 @@ export class Proposal {
     this.bio = proposal.bio;
     this.title = proposal.title;
     this.description = proposal.description;
+    this.scheduledSessions = proposal.scheduledSessions;
   }
 }
 

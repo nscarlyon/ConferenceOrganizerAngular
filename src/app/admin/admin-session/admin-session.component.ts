@@ -78,7 +78,7 @@ export class AdminSessionComponent implements OnInit {
     let standardTime: string = this.addingTimeSlot
       ? new TimeSlot(this.sessionForm.value.startTime, this.sessionForm.value.endTime).standardTime
       : this.sessionForm.value.timeSlot;
-    
+
     this.postData = new Session(this.proposal, this.sessionForm.value.room, standardTime);
   }
 

@@ -35,7 +35,10 @@ describe('AdminProposalsComponent', () => {
       email: "email-1",
       bio: "bio-1",
       description: "description-1",
-      scheduledSessions: new ScheduledSession("3", "Room A", "9:00-10:00 A.M")
+      scheduledSessions: [
+        new ScheduledSession("3", "Room A", "9:00-10:00 A.M"),
+        new ScheduledSession("5", "Room C", "9:00-10:00 A.M")
+      ]
     });
     proposalTwo = new Proposal({
       id: "2",
@@ -44,7 +47,7 @@ describe('AdminProposalsComponent', () => {
       email: "email-2",
       bio: "bio-2",
       description: "description-2",
-      scheduledSessions: new ScheduledSession("4", "Room B", "9:00-10:00 A.M")
+      scheduledSessions: [new ScheduledSession("4", "Room B", "9:00-10:00 A.M")]
   });
     component.proposals = [proposalOne, proposalTwo];
     conferenceOrganizerService = TestBed.get(ConferenceOrganizerService);
@@ -62,12 +65,14 @@ describe('AdminProposalsComponent', () => {
     expect(component.proposals).toEqual([proposalOne, proposalTwo]);
   });
 
+
   it("should delete a proposal and corresponding scheduled sessions", () => {
     spyOn(conferenceOrganizerService, 'deleteProposal').and.returnValue(Observable.of([proposalTwo]));
-    spyOn(conferenceOrganizerService, 'deleteSession').and.returnValue(Observable.of());
+    spyOn(conferenceOrganizerService, 'deleteSession').and.returnValue(Observable.of(""));
     component.deleteProposal(proposalOne);
     expect(component.proposals).toEqual([proposalTwo]);
     expect(conferenceOrganizerService.deleteProposal as Spy).toHaveBeenCalledWith("1");
     expect(conferenceOrganizerService.deleteSession as Spy).toHaveBeenCalledWith("3");
+    expect(conferenceOrganizerService.deleteSession as Spy).toHaveBeenCalledWith("5");
   });
 });
